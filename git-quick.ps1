@@ -17,4 +17,12 @@ if ([string]::IsNullOrWhiteSpace(($status | Out-String))) {
 }
 
 git commit -m $Message
-git push
+
+$branch = git rev-parse --abbrev-ref HEAD
+$upstream = git rev-parse --abbrev-ref --symbolic-full-name "@{u}" 2>$null
+if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace(($upstream | Out-String))) {
+  git push -u origin $branch
+}
+else {
+  git push
+}
