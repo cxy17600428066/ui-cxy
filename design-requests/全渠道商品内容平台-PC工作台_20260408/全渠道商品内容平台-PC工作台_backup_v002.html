@@ -1,0 +1,1018 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>产品手册生成流程 - PC端</title>
+<style>
+ :root{--bg:#f5f7fb;--card:#ffffff;--line:#e5eaf3;--txt:#1f2329;--muted:#86909c;--brand:#3473ff;--brand2:#255ad6;--soft:#edf3ff;--blue:#3473ff;--bsoft:#edf3ff;--green:#00b42a;--gsoft:#e8ffea;--accent:#ff7d00;--shadow:0 8px 24px rgba(15,35,95,.06)}
+*{box-sizing:border-box}body{margin:0;color:var(--txt);font-family:"Segoe UI Variable","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg)}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:1580px;margin:0 auto;padding:20px;display:grid;gap:16px}.hero,.panel,.drawer{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.hero{padding:24px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:inset 0 3px 0 var(--brand),var(--shadow);color:var(--txt)}.hero h1{margin:12px 0 8px;font:900 38px/1.08 "Bahnschrift","Segoe UI Variable","PingFang SC",sans-serif;color:#1d2129}.hero p{margin:0;max-width:980px;line-height:1.8;color:#4e5969}.badge{display:inline-flex;padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--brand);font-size:12px;font-weight:800;border:1px solid #d7e4ff}
+.stats{margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{padding:14px 16px;border-radius:12px;background:#f9fbff;border:1px solid #e1e8f5}.stat span{display:block;font-size:12px;color:var(--muted)}.stat strong{display:block;margin-top:6px;font-size:24px;color:#1d2129}
+.panel{padding:18px}.topbar{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:14px}.topbar h2{margin:0;font-size:22px;color:#1d2129}.topbar p{margin:6px 0 0;line-height:1.7;color:var(--muted)}.hint{color:var(--muted);font-size:13px}
+.stepper{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.step{padding:14px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease}.step.active{border-color:#c7d7ff;background:#f7faff;box-shadow:0 0 0 1px rgba(52,115,255,.08)}.step.done{border-color:#d7e4ff;background:#f8fbff}.step b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;margin-bottom:10px}.step.done b{background:linear-gradient(135deg,#5b8cff,#3473ff)}.step strong{display:block;font-size:14px;color:#1d2129}.step small{display:block;margin-top:6px;line-height:1.55;color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}.main{display:grid;gap:14px;min-width:0}.side{min-width:0}.view{display:none}.view.active{display:grid;gap:14px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 4px 14px rgba(15,35,95,.04)}
+.dish.sel,.scene.sel{border-color:#c7d7ff;background:#f7faff;box-shadow:0 0 0 1px rgba(52,115,255,.08)}.dish h3,.scene h3{margin:0;font-size:16px;color:#1d2129}.dish p,.scene p,.preview p,.line,.mini,.list small,.cap small{color:var(--muted)}.dish p,.scene p,.preview p{line-height:1.7}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.chip{padding:6px 10px;border-radius:999px;background:#f2f5fa;color:#4e5969;font-size:12px;font-weight:700;border:1px solid #e6ebf2}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn{border:1px solid transparent;padding:9px 14px;border-radius:6px;font-weight:800;transition:all .2s ease}.btn.p{background:var(--brand);border-color:var(--brand);color:#fff}.btn.s{background:var(--bsoft);border-color:#d4e3ff;color:var(--blue)}.btn.g{background:#fff;border-color:var(--line);color:#344054}.btn.d{background:#fff2f0;color:#d92d20;border-color:#f3c6c2}.btn:disabled{cursor:not-allowed;opacity:.48;box-shadow:none}
+.sceneGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field{display:grid;gap:8px}.field.full{grid-column:1/-1}.field label{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:800}.field label span:last-child{color:var(--muted)}.field input,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--txt)}.field textarea{min-height:96px;resize:vertical;line-height:1.7}
+.editorSections{display:grid;gap:16px}.editorBlock{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff;display:grid;gap:16px;min-width:0}.editorHeader{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid #edf1f7}.editorHeader strong{display:block;font-size:18px;color:#1d2129}.editorHeader p{margin:6px 0 0;font-size:13px;line-height:1.7;color:var(--muted)}.editorBadgeRow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.editorGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.editorBody{display:grid;gap:14px}.editorBody.collapsed{display:none}.productEditorGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}.productEditorCard{padding:16px;border:1px solid var(--line);border-radius:12px;background:#fff;display:grid;gap:14px;min-width:0;box-shadow:0 4px 14px rgba(15,35,95,.04)}.productEditorTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.productEditorTitle{display:grid;gap:6px;min-width:0}.productEditorTitle strong{font-size:16px;line-height:1.4;color:#1d2129;word-break:break-word}.productEditorMeta{font-size:12px;line-height:1.7;color:var(--muted);word-break:break-word}.productEditorFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.productEditorFields .field textarea{min-height:88px}.productEditorFields .field.full textarea{min-height:108px}.productEffectRow{display:flex;gap:8px;flex-wrap:wrap}.effectChip{padding:6px 10px;border-radius:999px;background:#edf3ff;color:#3473ff;font-size:12px;font-weight:700;border:1px solid #d7e4ff}
+.productEditorPreview{display:grid;gap:10px;padding:12px 14px;border:1px solid #edf1f7;border-radius:10px;background:#fafcff}.productEditorPreview p{margin:0;font-size:13px;line-height:1.7;color:#4e5969}.productEditorToolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.productEditorToggle{min-width:92px;align-self:start}
+.editorModal{position:fixed;inset:0;padding:24px;display:none;place-items:center;background:rgba(15,23,42,.26);backdrop-filter:blur(4px);z-index:60}.editorModal.open{display:grid}.editorModalPanel{width:min(900px,calc(100vw - 32px));max-height:calc(100vh - 48px);overflow:auto;padding:20px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 48px rgba(15,35,95,.16);display:grid;gap:16px}.editorModalTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.editorModalTitle{display:grid;gap:6px}.editorModalTitle h3{margin:0;font-size:22px;line-height:1.3;color:#1d2129}.editorModalTitle p{margin:0;font-size:13px;line-height:1.7;color:var(--muted)}
+.filterPanel{display:grid;gap:18px;padding:20px 22px;border:1px solid var(--line);border-radius:12px;background:#fff}.filterTop{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid #edf1f7}.filterTop>div:first-child{display:grid;gap:4px}.filterTop strong{display:block;font-size:20px;line-height:1.2;color:#1d2129}.filterTop .hint,#productFilterSummary{margin:0;font-size:13px;line-height:1.65;color:var(--muted)}.filterMeta{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;align-items:center}.filterMeta .chip{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 14px;border:1px solid #dce6f7;background:#f7faff;color:#4e5969;font-size:12px;font-weight:700}.filterMeta .chip strong{font-size:24px;line-height:1;color:var(--brand)}.filterActions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.filterMeta .btn.g,.filterMeta .btn.s{min-height:38px;padding:0 18px}.filterGroup{display:grid;grid-template-columns:126px minmax(0,1fr);gap:12px;align-items:start}.filterLabel{display:flex;align-items:center;min-height:36px;font-size:14px;line-height:1.5;font-weight:800;color:#1d2129}.filterOptions{display:flex;gap:10px;row-gap:10px;flex-wrap:wrap;align-items:center}.filterChip{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:0 14px;border-radius:999px;border:1px solid #dce4f2;background:#fff;color:#4e5969;font-size:12px;line-height:1;font-weight:700;letter-spacing:.01em;cursor:pointer;transition:all .2s ease}.filterChip:hover{border-color:#9db9ff;background:#f7faff;color:#255ad6}.filterChip.active{border-color:#c7d7ff;background:#edf3ff;color:#255ad6;box-shadow:none}#productFilters{display:grid;gap:10px}.emptyState{padding:24px;border:1px dashed #dce4f2;border-radius:10px;background:#fbfcff;text-align:center;color:var(--muted);line-height:1.8}
+.selectedSummary{position:sticky;top:20px;display:grid;gap:14px;max-height:calc(100vh - 40px);overflow:hidden}.sideHeader{display:flex;justify-content:space-between;gap:10px;align-items:center}.sideHeader .chip{background:#edf3ff;color:var(--brand);border:1px solid #d7e4ff}.selectedProducts{display:grid;gap:10px;min-width:0;overflow:auto;padding-right:4px}.selectedProductItem{padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff}.selectedProductRow{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.selectedProductItem strong{display:block;font-size:14px;color:#1d2129;word-break:break-word}.selectedProductMeta{margin-top:6px;font-size:12px;line-height:1.7;color:var(--muted);word-break:break-word}.sideRemoveBtn{padding:6px 10px;border-radius:6px;border:1px solid #f3c6c2;background:#fff2f0;color:#d92d20;font-size:12px;font-weight:800}.sideRemoveBtn:disabled{opacity:.45;cursor:not-allowed}
+.preview{padding:0;overflow:hidden}.module{padding:14px;border:1px solid var(--line);border-radius:10px;background:#fff}.module h4{margin:0 0 10px;font-size:16px}.list,.caps{display:grid;gap:10px}.item,.cap,.summary{padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff}.item strong,.cap strong,.summary strong{display:block;font-size:14px;color:#1d2129}.capHead{display:flex;justify-content:space-between;gap:10px;align-items:start}.pill{padding:6px 9px;border-radius:999px;background:var(--gsoft);color:var(--green);font-size:11px;font-weight:800;white-space:nowrap}
+.deckShell{padding:16px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:14px}.deckSidebar{display:grid;gap:10px;max-height:980px;overflow:auto;padding-right:4px}.thumb{padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;text-align:left;cursor:pointer}.thumb.active{border-color:#c7d7ff;background:#f7faff;box-shadow:0 0 0 1px rgba(52,115,255,.08)}.thumb strong{display:block;font-size:13px;color:#1d2129}.thumb small{display:block;margin-top:6px;line-height:1.55;color:var(--muted)}.deckStage{display:grid;gap:12px;min-width:0}.deckTools{display:grid;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff}.deckToolsTop{display:flex;justify-content:space-between;gap:12px;align-items:center}.deckNav,.deckPageActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.deckPageWrap{padding:18px;border:1px solid var(--line);border-radius:12px;background:#f8fbff;overflow:auto}
+.ppt{width:100%;min-height:0;border-radius:12px;overflow:visible;background:#fff;border:1px solid #dfe7f3;box-shadow:0 8px 24px rgba(15,35,95,.08);display:grid;grid-template-rows:auto 1fr}.pptTop{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 22px;background:linear-gradient(90deg,#255ad6,#3473ff);color:#fff}.pptBrand{font:900 14px/1 "Bahnschrift","Segoe UI Variable","PingFang SC",sans-serif;letter-spacing:.08em}.pptNo{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.18);font-size:12px;font-weight:800}.pptReplacedBody{padding:22px;display:grid;gap:14px}.pptReplacedVisual{border-radius:12px;overflow:hidden;border:1px solid #dfe7f3;background:#fbfdff;min-height:520px;display:grid;place-items:center}.pptReplacedVisual img{display:block;width:100%;height:100%;object-fit:contain}
+.pptBody{padding:clamp(16px,2vw,26px);display:grid;gap:18px;align-content:start}.ppt.cover .pptBody,.ppt.divider .pptBody{align-content:center;justify-items:start;background:
+radial-gradient(circle at right top, rgba(52,115,255,.08), transparent 28%),
+linear-gradient(180deg,#fbfdff,#fff)}
+.pptTitle{margin:0;font:900 clamp(28px,3vw,38px)/1.08 "Bahnschrift","Segoe UI Variable","PingFang SC",sans-serif;color:#1d2129;word-break:break-word}.pptSub{margin:0;font-size:clamp(15px,2vw,18px);color:#3473ff;font-weight:800}.pptDesc{margin:0;max-width:900px;font-size:14px;line-height:1.85;color:#4e5969;word-break:break-word}
+.pptCols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;align-items:start}.pptBox{padding:16px;border:1px solid var(--line);border-radius:10px;background:#fff;min-width:0}.pptBox h5{margin:0 0 10px;font-size:16px;color:#1d2129}.pptBox ul{margin:0;padding-left:18px}.pptBox li{margin:6px 0;line-height:1.75;color:#4e5969;word-break:break-word}
+.pptStats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.pptStat{padding:14px;border:1px solid var(--line);border-radius:10px;background:#fbfdff;min-width:0}.pptStat span{display:block;font-size:12px;color:var(--muted)}.pptStat strong{display:block;margin-top:5px;font-size:clamp(18px,2vw,20px);color:#1d2129;word-break:break-word}
+.pptTags{display:flex;flex-wrap:wrap;gap:8px}.pptTag{padding:7px 10px;border-radius:999px;background:#f2f5fa;color:#4e5969;font-size:12px;font-weight:700;border:1px solid #e6ebf2}.pptEffectRow{display:flex;flex-wrap:wrap;gap:8px}.pptEffect{padding:7px 10px;border-radius:999px;background:#edf3ff;color:#255ad6;font-size:12px;font-weight:800;border:1px solid #d7e4ff}.pptTable{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.pptCell{padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;min-width:0}.pptCell span{display:block;font-size:12px;color:var(--muted)}.pptCell strong{display:block;margin-top:5px;font-size:14px;word-break:break-word}
+.pptClosing{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.pptChannel{padding:16px;border:1px dashed #c7d7ff;border-radius:10px;background:#f8fbff;text-align:center}.pptChannel strong{display:block;font-size:15px;word-break:break-word}.pptChannel small{display:block;margin-top:8px;color:var(--muted);line-height:1.7}
+.nav{display:flex;justify-content:space-between;gap:10px;align-items:center}.drawer{position:fixed;inset:0;padding:24px;display:none;place-items:center;background:rgba(15,23,42,.26);backdrop-filter:blur(4px);z-index:50}.drawer.open{display:grid}.drawerPanel{width:min(980px,calc(100vw - 32px));max-height:calc(100vh - 48px);overflow:auto;padding:20px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 48px rgba(15,35,95,.16);display:grid;gap:14px}.drawerCloseRow{display:flex;justify-content:flex-end}.drawerTitle{margin:0;font-size:24px;line-height:1.25;color:#1d2129}.drawerHeader{display:grid;gap:6px}.drawerMain{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px;align-items:start}.drawerVisual{display:grid;gap:12px}.drawerInfo{display:grid;gap:12px}
+.qr{width:146px;height:146px;padding:10px;border-radius:12px;background:#fff;border:1px solid var(--line);display:grid;grid-template-columns:repeat(9,1fr);gap:3px}.qr i{background:#111827;border-radius:2px}.qr i:nth-child(2n){opacity:.12}.shareGrid{display:grid;grid-template-columns:1fr 220px;gap:14px}.linkbox{padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;word-break:break-all}.devicePreview{display:grid;gap:12px;margin-top:14px}.deviceSwitch{display:flex;gap:8px;flex-wrap:wrap}.switchBtn{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:6px;font-weight:800;color:#4e5969}.switchBtn.active{background:#edf3ff;border-color:#c7d7ff;color:#255ad6}.previewStage{padding:16px;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:auto}.previewViewport{margin:0 auto;transition:width .2s ease}.previewViewport.desktop{width:100%;max-width:1180px}.previewViewport.tablet{width:820px;max-width:100%}.previewViewport.mobile{width:390px;max-width:100%;border:10px solid #0f172a;border-radius:20px;overflow:hidden;background:#0f172a}.previewViewport iframe{display:block;width:100%;height:760px;border:0;background:#fff}.previewViewport.mobile iframe{height:740px}
+.dishMedia,.drawerCover,.pptVisual{position:relative;overflow:hidden;border:1px solid #dfe7f3;background:radial-gradient(circle at top right,rgba(52,115,255,.14),transparent 38%),linear-gradient(180deg,#fbfdff,#f4f8ff)}
+.dishMedia{margin:-4px -4px 12px;border-radius:18px;aspect-ratio:16/10;display:grid;place-items:center;padding:12px}
+.dishMedia img,.drawerCover img,.pptVisual img{display:block;width:100%;height:100%;object-fit:contain}
+.dishBadge,.pptVisualBadge{position:absolute;left:12px;top:12px;background:rgba(143,56,16,.88);color:#fff}
+.drawerCover{border-radius:20px;aspect-ratio:4/3;display:grid;place-items:center;padding:14px;max-width:280px;min-height:220px;margin:0 auto}
+.drawerGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.drawerDetailPanel{display:grid;gap:12px}
+.drawerDetailGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}
+.drawerDetailItem{padding:10px 12px;border:1px solid rgba(234,223,209,.9);border-radius:14px;background:rgba(255,255,255,.72)}
+.drawerDetailItem span{display:block;font-size:12px;line-height:1.4;color:#8a7867}
+.drawerDetailItem strong{display:block;margin-top:6px;font-size:14px;line-height:1.7;color:#162033;word-break:break-word}
+.miniCard{padding:12px;border:1px solid var(--line);border-radius:16px;background:#fffdf9}
+.miniCard strong{display:block;font-size:13px}
+.miniCard div{margin-top:6px;color:var(--muted);line-height:1.7;word-break:break-word}
+.pptProductPage .pptBody{background:radial-gradient(circle at right top,rgba(240,163,61,.18),transparent 24%),linear-gradient(180deg,#fffaf6,#fff)}
+.pptHero{display:grid;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:18px;align-items:stretch}
+.pptVisual{min-height:360px;border-radius:28px;padding:26px}
+.pptHeroCard{display:grid;gap:14px;padding:4px 0;min-width:0}
+.pptLead{padding:14px 16px;border-radius:10px;background:#f7faff;border:1px solid #dbe7ff;color:#4e5969;line-height:1.8}
+.pptFocus{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.pptFocusItem{padding:12px;border-radius:16px;background:#fff;border:1px solid var(--line)}
+.pptFocusItem span{display:block;font-size:12px;color:var(--muted)}
+.pptFocusItem strong{display:block;margin-top:5px;font-size:14px;word-break:break-word}
+@media (max-width:1280px){.pptHero{grid-template-columns:1fr}.drawerMain,.drawerGrid,.drawerDetailGrid{grid-template-columns:1fr 1fr}.drawerPanel{width:min(900px,calc(100vw - 28px))}.drawerCover{max-width:240px;min-height:190px}}
+@media (max-width:1280px){.cards{grid-template-columns:repeat(2,1fr)}.sceneGrid{grid-template-columns:repeat(3,1fr)}.layout,.shareGrid,.stepper,.stats,.deckShell,.pptCols,.pptStats,.pptClosing,.pptTable,.editorGrid{grid-template-columns:1fr}.filterGroup{grid-template-columns:110px minmax(0,1fr)}.productEditorFields{grid-template-columns:1fr}.selectedSummary{position:static;max-height:none}.selectedProducts{max-height:none}.previewViewport.tablet{width:100%}}@media (max-width:760px){.app{padding:14px}.hero h1{font-size:34px}.cards,.grid,.sceneGrid,.filterGroup,.drawerMain,.drawerDetailGrid,.drawerGrid,.productEditorFields{grid-template-columns:1fr}.filterPanel{padding:16px}.filterTop,.editorHeader{display:grid;gap:12px;padding-bottom:12px}.filterMeta,.filterActions,.editorBadgeRow{justify-content:flex-start}.filterMeta .chip strong{font-size:24px}.filterLabel{min-height:auto}.editorBlock{padding:16px}.drawer{padding:12px}.drawerPanel{width:min(100%,calc(100vw - 16px));max-height:calc(100vh - 24px);padding:16px}.drawerCover{max-width:220px;min-height:170px}.previewViewport.mobile{width:100%;border-width:8px}}
+</style>
+<style>
+ :root{
+  --bg:#edf3f8;
+  --bg-layer:#f7fbff;
+  --card:rgba(255,255,255,.92);
+  --card-strong:#ffffff;
+  --line:#d9e4ef;
+  --line-strong:#c2d3e5;
+  --txt:#132033;
+  --muted:#607086;
+  --brand:#2258f6;
+  --brand2:#3c8dff;
+  --brand3:#12317a;
+  --soft:#eef4ff;
+  --bsoft:#eef4ff;
+  --blue:#2258f6;
+  --green:#149c6e;
+  --gsoft:#eaf8f2;
+  --accent:#ff9a3d;
+  --shadow:0 24px 64px rgba(15,40,90,.08),0 10px 24px rgba(15,40,90,.05);
+  --shadow-soft:0 12px 28px rgba(16,36,82,.06),0 3px 10px rgba(16,36,82,.04);
+ }
+ *{scrollbar-width:thin;scrollbar-color:#c2d3e5 transparent}
+ body{
+  min-height:100vh;
+  color:var(--txt);
+  background:
+   radial-gradient(circle at top left,rgba(60,141,255,.14),transparent 28%),
+   radial-gradient(circle at top right,rgba(17,134,124,.10),transparent 24%),
+   linear-gradient(180deg,#f8fbfe 0%,#edf3f8 36%,#eef4f9 100%);
+ }
+ body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+   linear-gradient(rgba(255,255,255,.42),rgba(255,255,255,0)),
+   linear-gradient(90deg,rgba(23,59,110,.02) 1px,transparent 1px),
+   linear-gradient(rgba(23,59,110,.02) 1px,transparent 1px);
+  background-size:auto,32px 32px,32px 32px;
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.85),rgba(0,0,0,.25));
+  z-index:-1;
+ }
+ .app{
+  max-width:1640px;
+  padding:28px 24px 40px;
+  gap:20px;
+ }
+ .hero,.panel,.drawerPanel,.drawerPanel,.editorModalPanel,.filterPanel,.editorBlock,.productEditorCard,.selectedProductItem,.summary,.module,.thumb,.card,.dish,.scene,.step,.ppt{
+  border-radius:22px;
+ }
+ .hero,.panel,.drawerPanel,.editorModalPanel,.summary,.module,.card,.dish,.scene,.selectedProductItem,.productEditorCard,.editorBlock,.filterPanel,.thumb,.step,.ppt{
+  border:1px solid rgba(194,211,229,.9);
+  box-shadow:var(--shadow-soft);
+ }
+ .hero,.panel,.drawerPanel,.editorModalPanel,.summary,.module,.card,.dish,.scene,.selectedProductItem,.productEditorCard,.editorBlock,.filterPanel,.thumb,.step{
+  background:var(--card);
+  backdrop-filter:blur(18px);
+ }
+ .hero{
+  position:relative;
+  overflow:hidden;
+  padding:34px 34px 30px;
+  border-color:rgba(47,110,235,.22);
+  background:
+   radial-gradient(circle at 85% 18%,rgba(255,255,255,.18),transparent 18%),
+   radial-gradient(circle at 78% 0%,rgba(130,233,255,.14),transparent 22%),
+   linear-gradient(135deg,#0e1c38 0%,#17356a 42%,#1d64c8 100%);
+  box-shadow:0 28px 80px rgba(16,40,90,.22);
+ }
+ .hero::before{
+  content:"";
+  position:absolute;
+  inset:auto -120px -160px auto;
+  width:420px;
+  height:420px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.18),rgba(255,255,255,0) 64%);
+ }
+ .hero::after{
+  content:"";
+  position:absolute;
+  inset:18px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.12);
+  pointer-events:none;
+ }
+ .hero h1{
+  position:relative;
+  margin:14px 0 10px;
+  max-width:920px;
+  font-size:44px;
+  line-height:1.04;
+  letter-spacing:-.05em;
+  color:#fff;
+ }
+ .hero p{
+  position:relative;
+  max-width:980px;
+  color:rgba(240,246,255,.8);
+  font-size:15px;
+  line-height:1.9;
+ }
+ .badge{
+  position:relative;
+  min-height:34px;
+  align-items:center;
+  padding:0 14px;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.2);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  backdrop-filter:blur(14px);
+ }
+ .stats{margin-top:22px;gap:14px}
+ .stat{
+  position:relative;
+  padding:16px 18px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(14px);
+ }
+ .stat::before{
+  content:"";
+  position:absolute;
+  left:18px;
+  top:12px;
+  width:32px;
+  height:2px;
+  border-radius:999px;
+  background:rgba(255,255,255,.4);
+ }
+ .stat span{padding-top:8px;color:rgba(232,240,255,.72);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+ .stat strong{margin-top:8px;color:#fff;font-size:24px;line-height:1.25}
+ .panel{
+  position:relative;
+  padding:22px;
+ }
+ .panel::before,.summary::before,.filterPanel::before,.editorBlock::before,.productEditorCard::before,.thumb::before,.step::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:1px;
+  background:linear-gradient(90deg,rgba(255,255,255,.8),rgba(255,255,255,0));
+  pointer-events:none;
+ }
+ .topbar{
+  margin-bottom:18px;
+  align-items:flex-start;
+ }
+ .topbar h2,.filterTop strong,.drawerTitle,.editorModalTitle h3{
+  font-size:24px;
+  line-height:1.18;
+  letter-spacing:-.03em;
+  color:#11203a;
+ }
+ .topbar p,.drawerMeta,.mini,.line,.hint,#productFilterSummary,.selectedProductMeta,.editorHeader p,.editorModalTitle p,.productEditorMeta,.pptDesc,.pptLead,.pptBox li,.pptChannel small,.thumb small{
+  color:var(--muted);
+ }
+ .hint{
+  font-size:12px;
+  line-height:1.7;
+  letter-spacing:.01em;
+ }
+ .stepper{gap:12px}
+ .step{
+  position:relative;
+  padding:16px;
+  border-color:#d7e2ef;
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(247,250,254,.9));
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,background-color .22s ease;
+ }
+ .step:hover,.thumb:hover,.card:hover,.dish:hover,.scene:hover,.selectedProductItem:hover,.productEditorCard:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 34px rgba(14,37,84,.08);
+ }
+ .step.active,.step.done,.thumb.active,.dish.sel,.scene.sel,.filterChip.active,.switchBtn.active{
+  border-color:#b8cdfd;
+  background:linear-gradient(180deg,#fdfefe,#edf4ff);
+  box-shadow:0 18px 36px rgba(33,91,246,.10),0 0 0 1px rgba(33,91,246,.06);
+ }
+ .step b{
+  width:34px;
+  height:34px;
+  margin-bottom:12px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#0f2b73,#2265ff 70%,#58a2ff);
+  box-shadow:0 12px 20px rgba(34,88,246,.24);
+ }
+ .step strong,.dish h3,.scene h3,.module h4,.item strong,.cap strong,.summary strong,.selectedProductItem strong,.thumb strong,.productEditorTitle strong,.pptBox h5,.pptCell strong,.pptFocusItem strong,.drawerDetailItem strong{
+  color:#12223a;
+ }
+ .step small{margin-top:8px}
+ .cards,.sceneGrid,.grid,.pptCols,.pptStats,.pptClosing,.pptTable,.pptFocus{gap:14px}
+ .card,.dish,.scene,.summary,.module,.selectedProductItem,.productEditorCard,.editorBlock,.filterPanel,.thumb{
+  position:relative;
+  overflow:hidden;
+ }
+ .card,.dish,.scene,.summary,.module,.selectedProductItem,.productEditorCard{
+  padding:16px;
+  background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,251,255,.92));
+ }
+ .summary{
+  padding:18px 20px;
+  border-color:rgba(194,211,229,.92);
+ }
+ .chip,.pptTag,.effectChip{
+  min-height:30px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 12px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#f9fbff,#eef4fb);
+  color:#47607e;
+  border:1px solid #dce6f2;
+  font-size:12px;
+  font-weight:700;
+ }
+ .effectChip,.pptEffect{
+  background:linear-gradient(180deg,#f2f7ff,#e9f2ff);
+  color:var(--brand);
+  border-color:#d5e3ff;
+ }
+ .actions,.filterActions,.deviceSwitch,.deckNav,.deckPageActions,.productEffectRow,.editorBadgeRow,.filterMeta{gap:10px}
+ .btn,.switchBtn,.sideRemoveBtn{
+  min-height:40px;
+  padding:0 16px;
+  border-radius:12px;
+  border:1px solid transparent;
+  font-weight:800;
+  letter-spacing:.01em;
+  transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease,border-color .18s ease,color .18s ease;
+ }
+ .btn:hover,.switchBtn:hover,.sideRemoveBtn:hover{transform:translateY(-1px)}
+ .btn.p{
+  background:linear-gradient(135deg,#12317a,#2258f6 58%,#5aa7ff);
+  border-color:rgba(18,49,122,.32);
+  color:#fff;
+  box-shadow:0 14px 28px rgba(34,88,246,.24);
+ }
+ .btn.s{
+  background:linear-gradient(180deg,#f6faff,#ecf3ff);
+  border-color:#d5e3ff;
+  color:#1f57ea;
+ }
+ .btn.g,.switchBtn{
+  background:linear-gradient(180deg,#ffffff,#f4f8fc);
+  border-color:#d6e0ec;
+  color:#31465f;
+ }
+ .btn.d,.sideRemoveBtn{
+  background:linear-gradient(180deg,#fff7f6,#fff0ef);
+  border-color:#f2d0cd;
+  color:#cd4940;
+ }
+ .btn:disabled,.switchBtn:disabled,.sideRemoveBtn:disabled{transform:none;box-shadow:none}
+ .layout{gap:20px;align-items:start}
+ .selectedSummary{
+  top:24px;
+  gap:16px;
+  background:
+   radial-gradient(circle at top right,rgba(34,88,246,.08),transparent 22%),
+   linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,250,255,.92));
+ }
+ .filterPanel,.editorBlock{
+  padding:22px;
+  background:
+   radial-gradient(circle at top right,rgba(34,88,246,.06),transparent 18%),
+   linear-gradient(180deg,rgba(255,255,255,.98),rgba(247,251,255,.94));
+ }
+ .filterTop,.editorHeader{
+  padding-bottom:16px;
+  border-bottom:1px solid #e8eef6;
+ }
+ .filterMeta .chip{
+  min-height:42px;
+  padding:0 16px;
+  background:linear-gradient(180deg,#ffffff,#f5f9ff);
+  border-color:#d7e3f1;
+ }
+ .filterMeta .chip strong{font-size:26px}
+ .filterGroup{
+  grid-template-columns:136px minmax(0,1fr);
+  gap:14px;
+ }
+ .filterLabel{
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#52667f;
+ }
+ .filterChip{
+  min-height:34px;
+  padding:0 16px;
+  border-color:#d7e1ee;
+  background:linear-gradient(180deg,#ffffff,#f7fafe);
+  color:#4a607b;
+ }
+ .filterChip:hover{
+  border-color:#a8c2fb;
+  background:#f4f8ff;
+  color:#255ad6;
+ }
+ .field{
+  gap:10px;
+ }
+ .field label{
+  font-size:12px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:#445973;
+ }
+ .field label span:last-child{
+  color:#7d8da4;
+  text-transform:none;
+  letter-spacing:0;
+ }
+ .field input,.field textarea{
+  padding:14px 16px;
+  border-radius:16px;
+  border:1px solid #d7e1ee;
+  background:linear-gradient(180deg,#f8fbff,#f3f8fd);
+  color:var(--txt);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+  transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease;
+ }
+ .field input:focus,.field textarea:focus{
+  outline:none;
+  border-color:#94b6ff;
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(34,88,246,.10);
+ }
+ .editorGrid,.productEditorGrid,.productEditorFields{gap:14px}
+ .editorBlock{
+  gap:18px;
+ }
+ .editorHeader strong{
+  display:block;
+  font-size:22px;
+  line-height:1.2;
+  letter-spacing:-.03em;
+ }
+ .productEditorCard{
+  padding:18px;
+  gap:16px;
+ }
+ .productEditorPreview{
+  padding:14px 16px;
+  border-radius:16px;
+  border-color:#e2eaf5;
+  background:linear-gradient(180deg,#fbfdff,#f4f8fe);
+ }
+ .productEditorToolbar,.deckToolsTop,.sideHeader,.capHead,.drawerTop{
+  align-items:center;
+ }
+ .emptyState{
+  border-radius:18px;
+  border:1px dashed #c7d7e8;
+  background:linear-gradient(180deg,#fdfefe,#f5f9fd);
+ }
+ .deckShell{
+  padding:0;
+  grid-template-columns:250px minmax(0,1fr);
+  gap:18px;
+ }
+ .deckSidebar{
+  padding:18px 10px 18px 0;
+  max-height:1060px;
+ }
+ .thumb{
+  padding:14px 15px;
+  background:linear-gradient(180deg,#ffffff,#f5f9fd);
+ }
+ .deckTools{
+  padding:16px 18px;
+  border-radius:20px;
+  border:1px solid #d7e2ef;
+  background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(246,250,255,.94));
+  box-shadow:var(--shadow-soft);
+ }
+ .deckPageWrap,.previewStage{
+  padding:18px;
+  border-radius:22px;
+  border:1px solid #d7e1ee;
+  background:
+   radial-gradient(circle at top,rgba(34,88,246,.06),transparent 28%),
+   linear-gradient(180deg,#f8fbfe,#edf3f9);
+ }
+ .ppt{
+  border-radius:28px;
+  border-color:#d3deea;
+  background:linear-gradient(180deg,#ffffff,#f9fbff);
+  box-shadow:0 28px 60px rgba(15,40,90,.10);
+ }
+ .pptTop{
+  padding:18px 24px;
+  background:
+   radial-gradient(circle at right,rgba(97,194,255,.22),transparent 22%),
+   linear-gradient(135deg,#0f1c33,#1a3f75 62%,#2f7fff 100%);
+ }
+ .pptBrand{
+  font-size:13px;
+  letter-spacing:.16em;
+ }
+ .pptNo{
+  min-width:68px;
+  text-align:center;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(12px);
+ }
+ .pptBody,.pptReplacedBody{
+  padding:26px;
+  gap:18px;
+ }
+ .ppt.cover .pptBody,.ppt.divider .pptBody{
+  background:
+   radial-gradient(circle at top right,rgba(34,88,246,.10),transparent 24%),
+   linear-gradient(180deg,#fbfdff,#ffffff);
+ }
+ .pptTitle{
+  letter-spacing:-.05em;
+  color:#101f37;
+ }
+ .pptSub{
+  color:#2357ea;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+ }
+ .pptVisual,.drawerCover,.dishMedia,.pptReplacedVisual{
+  border-radius:24px;
+  border:1px solid #d8e4f0;
+  background:
+   radial-gradient(circle at top right,rgba(34,88,246,.16),transparent 34%),
+   linear-gradient(180deg,#fbfdff,#f1f6fd);
+ }
+ .pptBox,.pptStat,.pptCell,.pptFocusItem,.pptLead,.drawerDetailItem,.miniCard{
+  border-radius:18px;
+  border:1px solid #dce6f1;
+  background:linear-gradient(180deg,#ffffff,#f8fbff);
+  box-shadow:0 8px 18px rgba(15,40,90,.04);
+ }
+ .pptLead{
+  line-height:1.85;
+ }
+ .pptChannel{
+  border-radius:18px;
+  border-style:solid;
+  border-color:#caddff;
+  background:linear-gradient(180deg,#f8fbff,#eef5ff);
+ }
+ .drawer,.editorModal{
+  background:rgba(9,18,36,.34);
+  backdrop-filter:blur(14px);
+ }
+ .drawerPanel,.editorModalPanel{
+  padding:24px;
+  border-radius:28px;
+  border-color:#cfdeee;
+  background:
+   radial-gradient(circle at top right,rgba(34,88,246,.08),transparent 20%),
+   linear-gradient(180deg,#ffffff,#f7fbff);
+  box-shadow:0 30px 80px rgba(10,26,58,.18);
+ }
+ .drawerCloseRow{
+  margin-bottom:4px;
+ }
+ .drawerMain{
+  gap:20px;
+ }
+ .drawerDetailItem{
+  border-radius:16px;
+  background:linear-gradient(180deg,#fffefb,#fff8f2);
+ }
+ .drawerDetailItem span{
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#917f6f;
+ }
+ .sideHeader .chip{
+  background:linear-gradient(180deg,#f8fbff,#ecf3ff);
+  color:#255ad6;
+  border-color:#d6e4ff;
+ }
+ .switchBtn.active{
+  color:#1e57eb;
+ }
+ .previewViewport.mobile{
+  background:#101e37;
+  border-color:#101e37;
+ }
+ .previewViewport iframe{
+  border-radius:14px;
+ }
+ .dishMedia{
+  margin:-2px -2px 14px;
+  border-radius:20px;
+ }
+ .dishBadge,.pptVisualBadge{
+  background:linear-gradient(135deg,#7a3513,#b65f1f);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 8px 16px rgba(122,53,19,.22);
+ }
+ .nav{
+  padding:6px 4px 0;
+ }
+ @media (max-width:1280px){
+  .app{padding:22px 18px 32px}
+  .hero{padding:28px}
+  .hero h1{font-size:38px}
+  .deckShell{grid-template-columns:1fr}
+  .deckSidebar{max-height:none;padding:0}
+ }
+ @media (max-width:760px){
+  .app{padding:16px 14px 24px;gap:16px}
+  .panel,.filterPanel,.editorBlock,.drawerPanel,.editorModalPanel,.summary{padding:16px}
+  .hero{padding:24px 20px}
+  .hero h1{font-size:32px}
+  .stats{grid-template-columns:1fr 1fr}
+  .topbar h2,.filterTop strong,.drawerTitle,.editorModalTitle h3{font-size:20px}
+  .deckTools,.deckPageWrap,.previewStage{padding:14px}
+  .pptBody,.pptReplacedBody{padding:18px}
+  .btn,.switchBtn,.sideRemoveBtn{width:auto}
+ }
+</style>
+</head>
+<body>
+<div class="app">
+<section class="hero">
+  <span class="badge">Wizard Flow</span>
+  <h1>脱骨侠产品手册生成流程原型</h1>
+  <p>按业务流程分 5 步推进：选商品、选场景、编辑内容、预览确认、导出或分享。数据来源为 `外包商品列表.xls`，结构参考 `脱骨侠产品手册.pdf`，最终输出清晰的脱骨侠产品手册预览和移动端分享页。</p>
+  <div class="stats">
+    <div class="stat"><span>流程步骤</span><strong>5 步</strong></div>
+    <div class="stat"><span>选品方式</span><strong>像点菜一样多选</strong></div>
+    <div class="stat"><span>预览方式</span><strong>成册预览</strong></div>
+    <div class="stat"><span>最终结果</span><strong>导出 + 分享</strong></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="topbar">
+    <div><h2>向导式业务流程</h2><p>流程按顺序推进，但支持返回上一步修改。商品字段来自商品表，成册结构参考脱骨侠现有产品手册。</p></div>
+        <div class="hint">预览文件：<code>商品手册移动端预览-弹窗详情.html</code></div>
+  </div>
+  <div class="stepper" id="stepper"></div>
+</section>
+
+<section class="layout">
+  <div class="main">
+    <section class="panel view active" data-step="1">
+      <div class="topbar">
+        <div><h2>第 1 步：选择商品</h2><p>像点菜一样选商品，可以查看详情、口味、规格、适用场景和保存方式，支持多选。</p></div>
+        <div class="hint">已选择 <strong id="productCount">0</strong> 个商品</div>
+      </div>
+      <div class="filterPanel">
+        <div class="filterTop">
+          <div>
+            <strong>筛选条件</strong>
+            <div class="hint" id="productFilterSummary">未启用筛选，当前展示全部商品</div>
+          </div>
+          <div class="filterMeta">
+            <span class="chip">匹配商品 <strong id="productMatchCount">0</strong></span>
+            <div class="filterActions">
+              <button class="btn s" type="button" id="toggleProductSelection">全选当前结果</button>
+              <button class="btn g" type="button" id="clearProductFilters">清空筛选</button>
+            </div>
+          </div>
+        </div>
+        <div id="productFilters"></div>
+      </div>
+      <div class="cards" id="productGrid"></div>
+    </section>
+
+    <section class="panel view" data-step="2">
+      <div class="topbar">
+        <div><h2>第 2 步：选择用户场景</h2><p>经销商、KA、电商详情、餐饮、内部培训。系统会按场景加载手册默认结构。</p></div>
+        <div class="hint">当前场景：<strong id="sceneName">未选择</strong></div>
+      </div>
+      <div class="sceneGrid" id="sceneGrid"></div>
+    </section>
+
+    <section class="panel view" data-step="3">
+      <div class="topbar">
+        <div><h2>第 3 步：编辑文档内容</h2><p>系统先带出脱骨侠默认内容，再补充本次产品手册需要强调的信息，例如品牌背书、渠道策略和服务能力。</p></div>
+        <div class="hint">这里模拟“收集信息 -> 生成内容”的编辑过程。</div>
+      </div>
+      <div class="editorSections">
+        <section class="editorBlock">
+          <div class="editorHeader">
+            <div>
+              <strong>固定内容</strong>
+              <p>维护整份手册通用的标题、摘要、指标、分享方式和服务能力，这部分内容会直接同步到预览页和移动端头部信息。</p>
+            </div>
+            <div class="editorBadgeRow">
+              <span class="chip">文档级字段</span>
+              <span class="chip">同步封面与分享页</span>
+              <button class="btn g" type="button" id="toggleFixedContent">收起</button>
+            </div>
+          </div>
+          <div class="editorBody" id="fixedContentBody">
+          <div class="editorGrid">
+            <div class="field full"><label><span>手册标题</span><span>用于封面和分享页</span></label><input id="manualTitle"></div>
+            <div class="field full"><label><span>手册摘要</span><span>概述本次资料用途</span></label><textarea id="manualSummary"></textarea></div>
+            <div class="field"><label><span>重点指标一</span><span>SKU / 合作门店</span></label><input id="stat1"></div>
+            <div class="field"><label><span>重点指标二</span><span>物流 / 销量</span></label><input id="stat2"></div>
+            <div class="field"><label><span>重点指标三</span><span>服务 / 培训</span></label><input id="stat3"></div>
+            <div class="field"><label><span>分享方式</span><span>导出页展示</span></label><input id="shareMode"></div>
+            <div class="field full"><label><span>标签组</span><span>逗号分隔</span></label><input id="tags"></div>
+            <div class="field full"><label><span>服务能力</span><span>每行：标题 | 描述 | 标签</span></label><textarea id="caps"></textarea></div>
+          </div>
+          </div>
+        </section>
+        <section class="editorBlock">
+          <div class="editorHeader">
+            <div>
+              <strong>商品内容</strong>
+              <p>按当前已选商品分别编辑一句话优势、核心卖点、推荐场景、内容特效和强化标签，用于商品页预览和移动端详情同步。</p>
+            </div>
+            <div class="editorBadgeRow">
+              <span class="chip">逐商品编辑</span>
+              <span class="chip">同步商品预览</span>
+              <span class="chip" id="productEditorCount">0 个商品</span>
+            </div>
+          </div>
+          <div class="productEditorGrid" id="productEditors"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="panel view" data-step="4">
+      <div class="topbar">
+        <div><h2>第 4 步：预览生成的产品手册</h2><p>按 PPT 多页形式在线预览。脱骨侠手册第 1-12 页保留，第 32 页保留，所选商品自动生成插入页并融合在中间。</p></div>
+        <div class="hint">支持多页切换、缩略页定位和生成页预览。</div>
+      </div>
+      <div class="preview">
+        <div class="deckShell">
+          <div class="deckSidebar" id="deckThumbs"></div>
+          <div class="deckStage">
+            <div class="deckTools">
+              <div class="deckToolsTop">
+                <div>
+                  <strong id="deckTitle">脱骨侠产品手册在线预览</strong>
+                  <div class="hint" id="deckSub">固定页 + 自动插入商品页</div>
+                  <div class="hint" id="pageActionHint">按原 PDF 单页尺寸自动分页</div>
+                </div>
+                <div class="deckNav">
+                  <button class="btn g" id="deckPrevBtn">上一页</button>
+                  <div class="hint" id="deckIndicator">1 / 1</div>
+                  <button class="btn g" id="deckNextBtn">下一页</button>
+                </div>
+              </div>
+              <div class="deckPageActions">
+                <button class="btn s" id="pageReplaceBtn" type="button">替换页面</button>
+                <button class="btn g" id="pageRestoreBtn" type="button">恢复原页</button>
+                <button class="btn g" id="pageMoveUpBtn" type="button">上移</button>
+                <button class="btn g" id="pageMoveDownBtn" type="button">下移</button>
+                <button class="btn d" id="pageDeleteBtn" type="button">删除页面</button>
+              </div>
+            </div>
+            <div class="deckPageWrap">
+              <div id="deckPage"></div>
+            </div>
+            <input id="pageReplaceInput" type="file" accept="image/*" hidden>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel view" data-step="5">
+      <div class="topbar">
+        <div><h2>第 5 步：导出产品手册或生成分享链接</h2><p>支持导出手册、复制链接、生成二维码，并可直接预览产品手册在 PC、iPad、手机上的展示效果。</p></div>
+        <div class="hint">本页演示交付结果与分发方式。</div>
+      </div>
+      <div class="shareGrid">
+        <div class="card">
+          <div class="summary"><strong>导出与分享</strong><div class="line">导出格式：PDF / 长图 / H5 分享页</div><div class="line">版本：<span id="versionText">V1.0</span></div></div>
+          <div class="summary" style="margin-top:12px"><strong>生成分享链接</strong><div class="linkbox" id="shareLink"></div></div>
+          <div class="actions" style="margin-top:12px">
+            <button class="btn p" id="exportBtn">导出 PDF</button>
+            <button class="btn s" id="copyLinkBtn">复制分享链接</button>
+            <button class="btn g" id="openMobileBtn">打开最终预览页</button>
+          </div>
+        </div>
+        <div class="summary" style="display:grid;justify-items:center;gap:12px">
+          <strong>扫码查看手册</strong>
+          <div class="qr" id="qr"></div>
+          <div class="line" style="text-align:center">正式开发可接真实二维码服务。</div>
+        </div>
+      </div>
+      <div class="devicePreview">
+        <div class="summary">
+          <strong>终端预览</strong>
+          <div class="line">同一份 H5 查看页，支持 PC、iPad、手机三种展示宽度预览。</div>
+        </div>
+        <div class="deviceSwitch">
+          <button class="switchBtn active" data-device="desktop">PC端</button>
+          <button class="switchBtn" data-device="tablet">iPad</button>
+          <button class="switchBtn" data-device="mobile">手机端</button>
+        </div>
+        <div class="previewStage">
+          <div class="previewViewport desktop" id="previewViewport">
+            <iframe id="previewFrame" src="/商品手册移动端预览-弹窗详情.html" title="产品手册终端预览"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="nav">
+      <button class="btn g" id="prevBtn">上一步</button>
+      <div class="hint" id="navHint">请选择商品后继续</div>
+      <button class="btn p" id="nextBtn">下一步</button>
+    </div>
+  </div>
+
+  <aside class="side">
+    <div class="summary selectedSummary">
+      <div class="sideHeader">
+        <strong>当前选择商品</strong>
+        <span class="chip">已选 <strong id="sideProductCount">0</strong></span>
+      </div>
+      <div class="selectedProducts" id="sideProductsList"></div>
+    </div>
+  </aside>
+</section>
+</div>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true">
+  <div class="drawerPanel">
+    <div class="drawerCloseRow">
+      <button class="btn g" id="closeDrawer" type="button">关闭</button>
+    </div>
+    <div class="drawerHeader">
+      <h3 class="drawerTitle" id="drawerTitle"></h3>
+      <div class="mini" id="drawerMeta"></div>
+    </div>
+    <div class="drawerMain">
+      <div class="drawerVisual">
+        <div class="drawerCover" id="drawerCover"></div>
+      </div>
+      <div class="drawerInfo">
+        <div class="summary">
+          <strong id="drawerPrice">价格面议</strong>
+          <div class="line" id="drawerFlavor">风味信息</div>
+        </div>
+        <div class="mini" id="drawerDesc"></div>
+        <div class="drawerGrid">
+          <div class="miniCard"><strong>商品分类</strong><div id="drawerCategory"></div></div>
+          <div class="miniCard"><strong>适用渠道</strong><div id="drawerChannel"></div></div>
+          <div class="miniCard"><strong>适用场景</strong><div id="drawerScene"></div></div>
+          <div class="miniCard"><strong>保存方式</strong><div id="drawerStore"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="summary drawerDetailPanel">
+      <strong>商品详情</strong>
+      <div class="drawerDetailGrid" id="drawerDetails"></div>
+    </div>
+  </div>
+</div>
+
+<div class="editorModal" id="productEditorModal" role="dialog" aria-modal="true">
+  <div class="editorModalPanel">
+    <div class="editorModalTop">
+      <div class="editorModalTitle">
+        <h3 id="productEditorModalTitle">编辑商品内容</h3>
+        <p id="productEditorModalMeta"></p>
+      </div>
+      <button class="btn g" id="closeProductEditorModal" type="button">关闭</button>
+    </div>
+    <div class="productEffectRow" id="productEditorModalEffects"></div>
+    <div class="productEditorFields">
+      <div class="field full"><label><span>一句话优势</span><span>展示在商品主标题下方</span></label><input id="editorSubtitle"></div>
+      <div class="field full"><label><span>商品优势说明</span><span>概括商品价值和推荐理由</span></label><textarea id="editorSummary"></textarea></div>
+      <div class="field full"><label><span>核心卖点</span><span>每行一条，适合同步到预览和移动端</span></label><textarea id="editorSellingPoints"></textarea></div>
+      <div class="field"><label><span>推荐场景</span><span>逗号分隔，如直播间、商超端架</span></label><input id="editorScenes"></div>
+      <div class="field"><label><span>内容特效</span><span>逗号分隔，如风味高亮、规格放大</span></label><input id="editorEffects"></div>
+      <div class="field full"><label><span>强化标签</span><span>逗号分隔，会补充到商品标签区</span></label><input id="editorTags"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const KEY="channel-content-platform-demo";
+const MOBILE_PREVIEW_PATH="/商品手册移动端预览-弹窗详情.html";
+const MOBILE_SYNC_EVENT="channel-content-platform-sync";
+const productFilterDefs=[
+{key:"solidContent",label:"固形物含量",options:["60%","70%","80%","85%","100%"]},
+{key:"taste",label:"商品口味",options:["蒜香","酸辣柠檬","泡椒","卤香","香辣","红油","藤椒","韩式"]},
+{key:"unit",label:"商品单位",options:["袋","盒","罐","瓶","个","串","张","包"]},
+{key:"shelfLife",label:"保质期",options:["270天","300天","60天","10天","180天","45天","90天","360天"]},
+{key:"weight",label:"克重",options:["165g*10","180g*10","200g","208g","318g","330g","338g","398g"]},
+{key:"boneType",label:"含骨",options:["无骨","半去骨","虎皮","非虎皮有骨","其他"]},
+{key:"temperature",label:"温层",options:["冷冻","常温","冷藏"]},
+{key:"channels",label:"渠道",options:["大客","休食","餐饮","线下"]}
+];
+const products=[
+{id:"p1",name:"老卤鸭掌 散称单只 秘制潮卤",desc:"商品分类：老卤系列，渠道：常温休食，建议零售价 0.00 元。",spec:"散称单只 / 袋",scene:"经销商、KA、线下零售",store:"常温 · 9个月",category:"老卤系列",channel:"常温休食",price:"0.00",flavor:"秘制潮卤",image:"https://img.zhuoxi.group/19a63eeb7ca2360d8b7000998cf7b06ed15bb73856940a9df6a1ace86d1947f0438.png",tags:["脱骨侠","常温休食","老卤系列"],highlights:["散称灵活订货","适合渠道端陈列补货","卤香浓郁、即开即售"],detail:"标准名称：老卤鸭掌-脱骨侠-散称单只-秘制潮卤-9个月（100%-带骨鸭掌-常温-袋）。口味：秘制潮卤，含骨：带骨鸭掌。"},
+{id:"p2",name:"椒麻三角骨 450g",desc:"商品分类：椒麻系列，渠道：冻品休食，建议零售价 19.90 元。",spec:"450g / 盒",scene:"电商、KA、经销商",store:"冷冻 · 9个月",category:"椒麻系列",channel:"冻品休食",price:"19.90",flavor:"椒麻",image:"https://img.zhuoxi.group/267933c6458e3919828bec5a877893220f7dd004b556cb7707decd2eefba5372241.png",tags:["脱骨侠","椒麻系列","冷冻"],highlights:["椒麻味型辨识度高","适合电商组合购","450g 规格便于家庭分享"],detail:"标准名称：椒麻三角骨-脱骨侠-450克-椒麻-9个月-60%（椒麻鸡胸骨系列-冷冻-盒）。口味：椒麻，固形物含量：60%。"},
+{id:"p3",name:"无骨鸭掌 900g 藤椒",desc:"商品分类：无骨鸭掌，渠道：冻品休食，建议零售价 43.80 元。",spec:"900g / 罐",scene:"电商、餐饮、KA",store:"冷冻 · 9个月",category:"无骨鸭掌",channel:"冻品休食",price:"43.80",flavor:"藤椒",image:"https://img.zhuoxi.group/2c3194c82d8a154fe2c6d95897410e9eb4d91f8108343bb5823d6308df7aa302542.png",tags:["脱骨侠","无骨","藤椒"],highlights:["无骨食用便捷","大规格适合餐饮后厨","藤椒风味适合线上爆品表达"],detail:"标准名称：无骨鸭掌-脱骨侠-900克-藤椒-9个月-60%（无骨-冷冻-罐）。口味：藤椒，含骨：无骨。"},
+{id:"p4",name:"虎皮凤爪 2.5kg 卤香",desc:"商品分类：虎皮凤爪，渠道：餐饮，建议零售价 180.00 元。",spec:"2.5kg / 袋",scene:"餐饮、KA",store:"冷冻 · 12个月",category:"虎皮凤爪",channel:"餐饮",price:"180.00",flavor:"卤香",image:"https://img.zhuoxi.group/d9be86a9d3893575afadf602ae543463a12efa1c32da574caf7c89362511e9d6856.png",tags:["脱骨侠","餐饮","商用装"],highlights:["大包装适配后厨备货","适合卤味、小吃、佐餐","冷冻保供周期稳定"],detail:"标准名称：虎皮凤爪-脱骨侠-2.5千克-卤香-12个月-M号(LT)。口味：卤香，含骨：虎皮。"},
+{id:"p5",name:"佤味鸡爪 200g",desc:"商品分类：云南佤味，渠道：常温休食，建议零售价 23.90 元。",spec:"200g / 盒",scene:"电商、经销商、培训",store:"冷藏 · 10天",category:"云南佤味",channel:"常温休食",price:"23.90",flavor:"佤味",image:"https://img.zhuoxi.group/bebbc5587d25d4d5473b12f896727b79942c2d1ae7961047b2c26ea24869fdc8163.png",tags:["脱骨侠","冷藏","特色风味"],highlights:["区域特色风味突出","适合电商内容种草","可作为培训版重点讲解 SKU"],detail:"标准名称：佤味鸡爪-脱骨侠-200克-佤味-10天（100%-非虎皮有骨-冷藏-盒）。口味：佤味，含骨：非虎皮有骨。"},
+{id:"p6",name:"虎皮凤爪 105g 鲍汁味",desc:"商品分类：虎皮凤爪，渠道：常温休食，建议零售价 11.90 元。",spec:"105g / 袋",scene:"经销商、KA、电商",store:"常温 · 10个月",category:"虎皮凤爪",channel:"常温休食",price:"11.90",flavor:"鲍汁味",image:"https://img.zhuoxi.group/10094cfe12b5e138597a2d83ea6ed86a70f932eb0cb410b5c4874a4a5a564b83757.png",tags:["脱骨侠","虎皮凤爪","便携装"],highlights:["单袋便携适合卖场上架","鲍汁口味适合电商详情页转化","适合经销商铺货铺市"],detail:"标准名称：虎皮凤爪-脱骨侠-105克-鲍汁味-10个月(JX)（100%-虎皮-常温-袋）。口味：鲍汁，含骨：虎皮。"}
+];
+const productFilterData={
+  p1:{solidContent:"100%",taste:"卤香",unit:"袋",shelfLife:"270天",weight:"165g*10",boneType:"其他",temperature:"常温",channels:["休食","线下"]},
+  p2:{solidContent:"60%",taste:"香辣",unit:"盒",shelfLife:"270天",weight:"180g*10",boneType:"半去骨",temperature:"冷冻",channels:["休食","线下"]},
+  p3:{solidContent:"60%",taste:"藤椒",unit:"罐",shelfLife:"270天",weight:"398g",boneType:"无骨",temperature:"冷冻",channels:["休食","餐饮","线下"]},
+  p4:{solidContent:"85%",taste:"卤香",unit:"袋",shelfLife:"360天",weight:"338g",boneType:"虎皮",temperature:"冷冻",channels:["餐饮","线下"]},
+  p5:{solidContent:"100%",taste:"韩式",unit:"盒",shelfLife:"10天",weight:"200g",boneType:"非虎皮有骨",temperature:"冷藏",channels:["休食","线下"]},
+  p6:{solidContent:"100%",taste:"红油",unit:"袋",shelfLife:"300天",weight:"208g",boneType:"虎皮",temperature:"常温",channels:["大客","休食","线下"]}
+};
+products.forEach(p=>Object.assign(p,productFilterData[p.id]||{}));
+const productDetailData={
+  p1:{standardName:"老卤鸭掌-脱骨侠-28克-秘制潮卤-9个月（100%-带骨鸭掌-常温-袋）",jointCode:"TGX-LLYZ-MZCL28G-CW-N-9M",version:"v1",status:"运行中",brand:"脱骨侠",tasteLabel:"秘制潮卤",unitLabel:"袋",weightLabel:"28g",boneLabel:"带骨鸭掌",temperatureLabel:"常温",solidContentLabel:"100%",shelfLifeLabel:"9个月",spicyLevel:"无区分",salesChannelLabel:"常温休食",barcode69:"6977656954404"},
+  p2:{standardName:"椒麻三角骨-脱骨侠-450克-椒麻-9个月（60%-半去骨-冷冻-盒）",jointCode:"TGX-JMSJG-450G-LD-H-9M",version:"v1",status:"运行中",brand:"脱骨侠",tasteLabel:"椒麻",unitLabel:"盒",weightLabel:"450g",boneLabel:"半去骨",temperatureLabel:"冷冻",solidContentLabel:"60%",shelfLifeLabel:"9个月",spicyLevel:"中辣",salesChannelLabel:"冻品休食",barcode69:"6977656954411"},
+  p3:{standardName:"无骨鸭掌-脱骨侠-900克-藤椒-9个月（60%-无骨-冷冻-罐）",jointCode:"TGX-WGYZ-TJ900G-LD-G-9M",version:"v1",status:"运行中",brand:"脱骨侠",tasteLabel:"藤椒",unitLabel:"罐",weightLabel:"900g",boneLabel:"无骨",temperatureLabel:"冷冻",solidContentLabel:"60%",shelfLifeLabel:"9个月",spicyLevel:"微辣",salesChannelLabel:"冻品休食",barcode69:"6977656954428"},
+  p4:{standardName:"虎皮凤爪-脱骨侠-2.5kg-卤香-12个月（85%-虎皮-冷冻-袋）",jointCode:"TGX-HPFZ-LX25KG-LD-D-12M",version:"v1",status:"运行中",brand:"脱骨侠",tasteLabel:"卤香",unitLabel:"袋",weightLabel:"2.5kg",boneLabel:"虎皮",temperatureLabel:"冷冻",solidContentLabel:"85%",shelfLifeLabel:"12个月",spicyLevel:"无区分",salesChannelLabel:"餐饮",barcode69:"6977656954435"},
+  p5:{standardName:"佤味鸡爪-脱骨侠-200克-佤味-10天（100%-非虎皮有骨-冷藏-盒）",jointCode:"TGX-WWJZ-200G-LC-H-10D",version:"v1",status:"运行中",brand:"脱骨侠",tasteLabel:"佤味",unitLabel:"盒",weightLabel:"200g",boneLabel:"非虎皮有骨",temperatureLabel:"冷藏",solidContentLabel:"100%",shelfLifeLabel:"10天",spicyLevel:"特辣",salesChannelLabel:"休食",barcode69:"6977656954442"},
+  p6:{standardName:"虎皮凤爪-脱骨侠-105克-鲍汁味-10个月（100%-虎皮-常温-袋）",jointCode:"TGX-HPFZ-BZW105G-CW-D-10M",version:"v1",status:"运行中",brand:"脱骨侠",tasteLabel:"鲍汁味",unitLabel:"袋",weightLabel:"105g",boneLabel:"虎皮",temperatureLabel:"常温",solidContentLabel:"100%",shelfLifeLabel:"10个月",spicyLevel:"无区分",salesChannelLabel:"常温休食",barcode69:"6977656954459"}
+};
+products.forEach(p=>Object.assign(p,productDetailData[p.id]||{}));
+const productPriceData={
+  p1:{factoryPrice:"0.78",retailPrice:"1.00"},
+  p2:{factoryPrice:"13.80",retailPrice:"19.90"},
+  p3:{factoryPrice:"31.60",retailPrice:"43.80"},
+  p4:{factoryPrice:"138.00",retailPrice:"180.00"},
+  p5:{factoryPrice:"16.90",retailPrice:"23.90"},
+  p6:{factoryPrice:"8.60",retailPrice:"11.90"}
+};
+products.forEach(p=>Object.assign(p,productPriceData[p.id]||{}));
+const scenes={distributor:{name:"经销商订货版",audience:"经销商 / 渠道客户",output:"订货手册 / 价目表",title:"脱骨侠经销商订货版产品手册",summary:"参考脱骨侠线下渠道手册结构，突出商品丰富度、规格箱规、供货规则、动销建议和物流时效，帮助渠道客户快速选品下单。",stats:["外包表 800+ 商品","24 小时发货","18 个区域仓配"],tags:"脱骨侠,热销,可整箱,利润友好",caps:[["品牌与系列","结合脱骨侠产品系列和渠道分层，帮助客户快速看懂商品矩阵。","品牌"],["订货规则","支持整箱订货、混拼与起订量说明。","订货规则"],["物流履约","支持区域仓配、补货时效和运输说明。","物流服务"]]},ka:{name:"KA卖场版",audience:"商超采购 / 招商经理",output:"KA提案 / 客户资料",title:"脱骨侠KA卖场合作产品手册",summary:"参考脱骨侠产品手册中的集团介绍、供应链、线下渠道结构，突出企业资质、合作伙伴、销量势能、主推商品、陈列服务和物流能力。",stats:["集团背书","年GMV 20亿+","11 个商超系统"],tags:"脱骨侠,资质齐全,品牌背书,陈列支持",caps:[["集团与供应链","展示集团介绍、工厂配置、原料质检和产能能力。","品牌背书"],["卖场服务","支持物料、巡店、陈列和档期活动。","服务"],["交付能力","支持常温/冷链和区域履约覆盖。","物流"]]},ecommerce:{name:"电商详情版",audience:"消费者 / 电商运营",output:"详情页 / 长图 / 活动页",title:"脱骨侠电商详情版产品手册",summary:"参考脱骨侠线上渠道页结构，突出风味卖点、口感、场景、参数表、配料营养与 FAQ，多商品时支持矩阵和组合装展示。",stats:["线上渠道结构","3 类多商品样式","视频 + 图文"],tags:"脱骨侠,高转化,组合购,详情长图",caps:[["详情模板","支持单品、同系列和组合装三类模板。","页面"],["运营联动","支持 FAQ、加购推荐和评价摘录。","转化"],["素材支持","统一管理封面图、详情图和视频。","内容"]]},catering:{name:"餐饮销售版",audience:"餐饮客户 / 渠道业务",output:"解决方案页 / 客户提案",title:"脱骨侠餐饮销售版产品手册",summary:"参考脱骨侠餐饮冷冻页结构，突出可做菜系、出品方式、定制支持、稳定供货、样品服务和冷链配送能力，传达解决方案。",stats:["餐饮冷冻品线","48 小时打样","可定制规格"],tags:"脱骨侠,菜系适配,可定制,稳定供货",caps:[["餐饮品线","基于餐饮冷冻品结构展示商用装和原料型商品。","品线"],["定制服务","支持口味、规格和包装打样。","定制"],["供应保障","支持配送周期说明和保供机制。","交付"]]},training:{name:"内部培训版",audience:"销售 / 导购 / 新员工",output:"培训页 / 知识库 / 视频页",title:"脱骨侠内部培训版产品手册",summary:"结合脱骨侠品牌介绍、产品系列和渠道页，突出产品清单、卖点拆解、讲解视频、FAQ 和标准话术，帮助新人快速上手。",stats:["32 页参考手册","89% 完成率","FAQ 120 条"],tags:"脱骨侠,产品知识,视频培训,标准话术",caps:[["品牌知识","沉淀脱骨侠品牌、集团、工厂和供应链基础介绍。","品牌"],["销售话术","沉淀标准介绍话术和答疑。","话术"],["学习追踪","支持完成率和后续考核扩展。","运营"]]}};
+const fixedDeckPages=[
+{pageNo:"P01",kind:"cover",thumb:"封面",title:"BONELESS MAN PRODUCT BROCHURE",subtitle:"脱骨侠产品手册 · Feb 2025",desc:"保留原手册封面样式，作为整份产品手册首页。"},
+{pageNo:"P02",kind:"content",thumb:"目录",title:"目录 CONTENTS",desc:"保留原目录结构：01 集团介绍，02 供应链介绍，03 产品系列总览。",bullets:["集团介绍：卓希集团 / 卓希食品 / 马商食品","供应链介绍：产业链布局、原料质检、研发团队、工厂配置、产品品质、物流系统","产品系列总览：线上渠道、线下渠道、餐饮渠道"]},
+{pageNo:"P03",kind:"divider",thumb:"集团介绍",title:"集团介绍",subtitle:"GROUP INTRODUCTION",desc:"保留原手册章节分隔页。"},
+{pageNo:"P04",kind:"content",thumb:"集团介绍",title:"卓希集团与脱骨侠品牌",desc:"保留原第 4 页品牌与集团背书内容。",bullets:["国内首家无骨鸡爪全链路食品集团","孵化脱骨侠等头部品牌","脱骨侠：无骨鸡爪全网第一品牌","年 GMV 超 20 亿，累计热销 1 亿+ 罐","年产能 14 万吨，具备 ISO22000 / HACCP 体系认证"]},
+{pageNo:"P05",kind:"content",thumb:"渠道矩阵",title:"渠道与产品矩阵",desc:"保留原渠道结构页，展示常温、冷藏、冷冻及线下餐饮/卖场/超市/便利店等渠道矩阵。",bullets:["常温休食 / 冷藏即食 / 冷冻餐饮多温层布局","线下餐饮、小吃、卖场、广式蒸凤爪等多场景覆盖","超市、便利店、卤味店、佐餐等终端触点覆盖"]},
+{pageNo:"P06",kind:"divider",thumb:"供应链介绍",title:"供应链介绍",subtitle:"SUPPLY CHAIN INTRODUCTION",desc:"保留原供应链章节分隔页。"},
+{pageNo:"P07",kind:"content",thumb:"产业链",title:"全产业链布局",desc:"保留原两大中心与全产业链布局结构。",bullets:["原料集采中心","研发中心","加工 / 生产","物流系统","杭州管理中心与马鞍山生产中心协同"]},
+{pageNo:"P08",kind:"content",thumb:"原料质检",title:"原料质检与认证",desc:"保留原原料质检页。",bullets:["自建原料集采中心，确保货源充足稳定","层层把关，严控品质","HACCP 体系认证","质量管理体系认证","食品安全体系认证"]},
+{pageNo:"P09",kind:"content",thumb:"研发团队",title:"大师级研发团队",desc:"保留原研发顾问页。",bullets:["大师级调味，回味无穷","中国烹饪大师参与产品研发顾问","非遗传承人与新派川菜掌门人等外部顾问加持"]},
+{pageNo:"P10",kind:"content",thumb:"工厂配置",title:"工厂配置过硬",desc:"保留原工厂配置页。",bullets:["鸡爪食品生产工厂规模全球第一","采用智能化数字车间","保证安全、高效、专业的生产体系"]},
+{pageNo:"P11",kind:"content",thumb:"品质与产能",title:"产品品质与生产能力",desc:"保留原品质页。",bullets:["优选品质大爪","人工去骨率 98%","累计销量 1 亿+","5000+ 脱骨工人手工剔骨","年产能 14 万吨"]},
+{pageNo:"P12",kind:"content",thumb:"物流系统",title:"物流系统过硬",desc:"保留原物流系统页。",bullets:["定制顺丰分拣系统","厂仓一体生产基地","真正实现现做现发"]},
+{pageNo:"P32",kind:"closing",thumb:"封底",title:"脱骨侠全渠道触点",desc:"保留原第 32 页封底和渠道触点信息。"}
+];
+const PDF_PAGE_SIZE={width:1600,height:900};
+const PRODUCT_PAGE_LIMITS={summaryChars:110,tags:8,effects:4,focus:3,scenes:6,detailBullets:6};
+const createEmptyProductFilters=()=>Object.fromEntries(productFilterDefs.map(def=>[def.key,[]]));
+function createDefaultProductContent(product){
+  return {
+    subtitle:`${product.channel}重点推荐，突出${product.flavor || product.category}与${product.spec}组合表达`,
+    summary:`围绕 ${product.name} 集中展示风味特色、规格优势、适配渠道与转化卖点，帮助客户快速判断商品价值。`,
+    sellingPoints:(product.highlights||[]).slice(0,4).join("\n"),
+    scenes:(product.scene||"").replace(/、/g,"，"),
+    effects:[product.flavor?`${product.flavor}高亮`:"风味高亮",product.channel?`${product.channel}角标`:"渠道角标",product.spec?`${product.spec}规格放大`:"规格放大"].filter(Boolean).join("，"),
+    tags:uniqueTags([...(product.tags||[]),product.category,product.channel]).slice(0,6).join("，")
+  };
+}
+let state={step:1,selected:[],filters:createEmptyProductFilters(),scene:"",manualTitle:"",manualSummary:"",stat1:"",stat2:"",stat3:"",shareMode:"分享链接",tags:"",caps:"",version:"V1.0",deckIndex:0,productContent:{},fixedContentCollapsed:false,activeProductEditorId:"",pageOverrides:{},pageOrder:[],deletedPageIds:[],pendingReplacePageId:""};
+const $=id=>document.getElementById(id);
+const descs=["多选并查看详情","加载业务模板","补充手册信息","确认生成结果","导出或扫码查看"];
+function stepTitle(n){return["选择商品","选择场景","编辑内容","预览确认","导出/分享"][n-1]}
+function maxStep(){if(!state.selected.length)return 1;if(!state.scene)return 2;return 5}
+function go(n){state.step=n;if(n===4){const pages=buildDeckPages();const firstProductIndex=pages.findIndex(page=>page.source==="product");state.deckIndex=firstProductIndex>=0?firstProductIndex:Math.min(state.deckIndex,Math.max(0,pages.length-1))}document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",+v.dataset.step===n));renderStepper();renderNav();if(n===4)renderDeck()}
+function renderStepper(){$("stepper").innerHTML="";[1,2,3,4,5].forEach(n=>{const b=document.createElement("button");b.type="button";b.className="step"+(state.step===n?" active":"")+(state.step>n?" done":"");b.innerHTML=`<b>${n}</b><strong>${stepTitle(n)}</strong><small>${descs[n-1]}</small>`;if(n<=maxStep())b.onclick=()=>go(n);$("stepper").appendChild(b)})}
+function formatPrice(price){return price&&price!=="0.00"?`建议零售价 ${price} 元`:"价格面议"}
+function formatFactoryPrice(price){return price?`出厂价 ${price} 元`:"出厂价待定"}
+function productFocus(p){return[p.flavor||"主打风味",p.channel||"多渠道",p.store||"标准保存"]}
+function uniqueTags(list){return [...new Set(list.filter(Boolean))]}
+function parseListText(text){return (text||"").split(/[\n,，]/).map(item=>item.trim()).filter(Boolean)}
+function escapeHtml(text){return String(text??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function escapeAttr(text){return escapeHtml(text).replace(/"/g,"&quot;")}
+function getFilterValues(value){return Array.isArray(value)?value:[value].filter(Boolean)}
+function ensureProductContentDefaults(){picked().forEach(product=>{if(!state.productContent[product.id])state.productContent[product.id]=createDefaultProductContent(product)})}
+function getProductContent(product){ensureProductContentDefaults();return {...createDefaultProductContent(product),...(state.productContent[product.id]||{})}}
+function enrichedProduct(product){const content=getProductContent(product);return {...product,promoSubtitle:content.subtitle,promoSummary:content.summary,promoBullets:parseListText(content.sellingPoints),promoScenes:parseListText(content.scenes),promoEffects:parseListText(content.effects),promoTags:parseListText(content.tags)}}
+function currentEditingProduct(){return products.find(product=>product.id===state.activeProductEditorId)||null}
+function removeSelectedProduct(productId,{keepOne=false}={}){if(keepOne&&state.selected.length<=1)return;setSelectedProducts(state.selected.filter(id=>id!==productId))}
+function filteredProducts(){return products.filter(p=>productFilterDefs.every(def=>{const active=state.filters[def.key]||[];if(!active.length)return true;const values=getFilterValues(p[def.key]);return active.some(item=>values.includes(item))}))}
+function activeFilterCount(){return productFilterDefs.reduce((sum,def)=>sum+(state.filters[def.key]||[]).length,0)}
+function matchedSelectedCount(list=filteredProducts()){const visibleIds=new Set(list.map(p=>p.id));return state.selected.filter(id=>visibleIds.has(id)).length}
+function setSelectedProducts(next){state.selected=[...new Set(next)];if(state.activeProductEditorId&&!state.selected.includes(state.activeProductEditorId))closeProductEditorModal();ensureProductContentDefaults();renderProducts();renderProductFilters();renderProductEditors();renderNav();renderPreview()}
+function toggleProductFilter(key,value){const current=state.filters[key]||[];state.filters[key]=current.includes(value)?current.filter(item=>item!==value):[...current,value];renderProductFilters();renderProducts()}
+function clearProductFilters(){state.filters=createEmptyProductFilters();renderProductFilters();renderProducts()}
+function toggleVisibleProducts(){const list=filteredProducts();if(!list.length)return;const ids=list.map(p=>p.id);const allSelected=ids.every(id=>state.selected.includes(id));setSelectedProducts(allSelected?state.selected.filter(id=>!ids.includes(id)):[...state.selected,...ids])}
+function renderProductFilters(){const list=filteredProducts();const activeCount=activeFilterCount();const matched=list.length;const selectedMatched=matchedSelectedCount(list);const allMatchedSelected=matched>0&&selectedMatched===matched;$("productFilterSummary").textContent=activeCount?`已启用 ${activeCount} 个筛选项，当前匹配 ${matched} 个商品`:"未启用筛选，当前展示全部商品";$("productMatchCount").textContent=matched;$("toggleProductSelection").textContent=allMatchedSelected?"取消当前结果":"全选当前结果";$("toggleProductSelection").disabled=!matched;$("toggleProductSelection").title=matched?`当前结果中已选择 ${selectedMatched} / ${matched}`:"当前没有可选择的商品";const wrap=$("productFilters");wrap.innerHTML=productFilterDefs.map(def=>`<div class="filterGroup"><div class="filterLabel">${def.label}</div><div class="filterOptions">${def.options.map(option=>`<button type="button" class="filterChip${(state.filters[def.key]||[]).includes(option)?" active":""}" data-key="${def.key}" data-value="${option}">${option}</button>`).join("")}</div></div>`).join("");Array.from(wrap.querySelectorAll(".filterChip")).forEach(btn=>btn.onclick=()=>toggleProductFilter(btn.dataset.key,btn.dataset.value));$("clearProductFilters").disabled=!activeCount}
+function renderProducts(){const list=filteredProducts();$("productGrid").innerHTML="";if(!list.length){$("productGrid").innerHTML='<div class="emptyState">当前筛选条件下没有匹配商品。<br>可以减少筛选项，或点击“清空筛选”恢复全部商品。</div>'}else{list.forEach(p=>{const sel=state.selected.includes(p.id);const d=document.createElement("div");d.className="card dish"+(sel?" sel":"");d.innerHTML=`<div class="dishMedia"><img src="${p.image}" alt="${p.name}" loading="lazy"><span class="chip dishBadge">${formatPrice(p.price)}</span></div><h3>${p.name}</h3><div class="meta">${p.tags.map(t=>`<span class="chip">${t}</span>`).join("")}</div><p>${p.desc}</p><div class="mini">${p.spec} · ${p.store} · ${p.channel}</div><div class="mini">69码：${p.barcode69||"-"}</div><div class="actions"><button class="btn ${sel?"d":"p"}">${sel?"移除":"加入手册"}</button><button class="btn g">查看详情</button></div>`;d.querySelectorAll("button")[0].onclick=()=>setSelectedProducts(sel?state.selected.filter(x=>x!==p.id):[...state.selected,p.id]);d.querySelectorAll("button")[1].onclick=()=>openDrawer(p);$("productGrid").appendChild(d)})}$("productCount").textContent=state.selected.length}
+function productDetailItems(p){return[["商品标准名称",p.standardName||p.name],["联合编码",p.jointCode||"-"],["商品品牌",p.brand||"脱骨侠"],["商品分类",p.category],["版本信息",p.version||"v1"],["商品口味",p.tasteLabel||p.flavor||"-"],["运行状态",p.status||"运行中"],["商品单位",p.unitLabel||p.unit||"-"],["出厂价",p.factoryPrice?`${p.factoryPrice} 元`:"-"],["建议零售价",p.retailPrice?`${p.retailPrice} 元`:(p.price&&p.price!=="0.00"?`${p.price} 元`:"-")],["克重",p.weightLabel||p.weight||"-"],["含骨",p.boneLabel||p.boneType||"-"],["温层",p.temperatureLabel||p.temperature||"-"],["固形物含量",p.solidContentLabel||p.solidContent||"-"],["保质期",p.shelfLifeLabel||p.shelfLife||"-"],["辣度",p.spicyLevel||"无区分"],["销售渠道",p.salesChannelLabel||p.channel||"-"],["69码",p.barcode69||"-"]]}
+function closeDrawer(){$("drawer").classList.remove("open");document.body.style.overflow=""}
+function openDrawer(p){$("drawerTitle").textContent=p.name;$("drawerMeta").textContent=`${p.spec} · ${p.scene}`;$("drawerCover").innerHTML=`<img src="${p.image}" alt="${p.name}" loading="lazy">`;$("drawerPrice").textContent=formatPrice(p.retailPrice||p.price);$("drawerFlavor").textContent=`${formatFactoryPrice(p.factoryPrice)} · ${p.category} · ${p.flavor}`;$("drawerDesc").textContent=p.detail;$("drawerDetails").innerHTML=productDetailItems(p).map(item=>`<div class="drawerDetailItem"><span>${item[0]}</span><strong>${item[1]}</strong></div>`).join("");$("drawerCategory").textContent=p.category;$("drawerChannel").textContent=p.channel;$("drawerScene").textContent=p.scene;$("drawerStore").textContent=p.store;$("drawer").classList.add("open");document.body.style.overflow="hidden"}
+$("closeDrawer").onclick=closeDrawer;
+$("drawer").onclick=e=>{if(e.target===$("drawer"))closeDrawer()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("drawer").classList.contains("open"))closeDrawer();if(e.key==="Escape"&&$("productEditorModal").classList.contains("open"))closeProductEditorModal()});
+$("clearProductFilters").onclick=clearProductFilters;
+$("toggleProductSelection").onclick=toggleVisibleProducts;
+$("toggleFixedContent").onclick=toggleFixedContent;
+$("closeProductEditorModal").onclick=closeProductEditorModal;
+$("productEditorModal").onclick=e=>{if(e.target===$("productEditorModal"))closeProductEditorModal()};
+["editorSubtitle","editorSummary","editorSellingPoints","editorScenes","editorEffects","editorTags"].forEach(id=>$(id).addEventListener("input",e=>{const map={editorSubtitle:"subtitle",editorSummary:"summary",editorSellingPoints:"sellingPoints",editorScenes:"scenes",editorEffects:"effects",editorTags:"tags"};syncProductEditorModal(map[id],e.target.value)}));
+$("pageMoveUpBtn").onclick=()=>moveCurrentPage(-1);
+$("pageMoveDownBtn").onclick=()=>moveCurrentPage(1);
+$("pageDeleteBtn").onclick=deleteCurrentPage;
+$("pageReplaceBtn").onclick=replaceCurrentPage;
+$("pageRestoreBtn").onclick=restoreCurrentPage;
+$("pageReplaceInput").addEventListener("change",e=>handlePageReplacement(e.target.files&&e.target.files[0]));
+function renderScenes(){$("sceneGrid").innerHTML="";Object.entries(scenes).forEach(([k,s])=>{const d=document.createElement("button");d.type="button";d.className="card scene"+(state.scene===k?" sel":"");d.innerHTML=`<h3>${s.name}</h3><div class="meta"><span class="chip">${s.output}</span></div><p>${s.summary}</p>`;d.onclick=()=>{state.scene=k;$("sceneName").textContent=s.name;state.manualTitle=s.title;state.manualSummary=s.summary;state.stat1=s.stats[0];state.stat2=s.stats[1];state.stat3=s.stats[2];state.shareMode="分享链接";state.tags=s.tags;state.caps=s.caps.map(i=>`${i[0]} | ${i[1]} | ${i[2]}`).join("\n");ensureProductContentDefaults();fillForm();renderProductEditors();renderScenes();renderNav();renderPreview()};$("sceneGrid").appendChild(d)})}
+function fillForm(){$("manualTitle").value=state.manualTitle;$("manualSummary").value=state.manualSummary;$("stat1").value=state.stat1;$("stat2").value=state.stat2;$("stat3").value=state.stat3;$("shareMode").value=state.shareMode;$("tags").value=state.tags;$("caps").value=state.caps}
+function syncForm(){state.manualTitle=$("manualTitle").value.trim();state.manualSummary=$("manualSummary").value.trim();state.stat1=$("stat1").value.trim();state.stat2=$("stat2").value.trim();state.stat3=$("stat3").value.trim();state.shareMode=$("shareMode").value.trim();state.tags=$("tags").value.trim();state.caps=$("caps").value}
+function picked(){return products.filter(p=>state.selected.includes(p.id))}
+function renderFixedContent(){const collapsed=Boolean(state.fixedContentCollapsed);$("fixedContentBody").classList.toggle("collapsed",collapsed);$("toggleFixedContent").textContent=collapsed?"展开":"收起"}
+function toggleFixedContent(){state.fixedContentCollapsed=!state.fixedContentCollapsed;renderFixedContent()}
+function fillProductEditorModal(product){const content=getProductContent(product);$("productEditorModalTitle").textContent=`编辑商品内容 · ${product.name}`;$("productEditorModalMeta").textContent=`${product.spec} · ${product.store} · ${product.channel}`;$("editorSubtitle").value=content.subtitle;$("editorSummary").value=content.summary;$("editorSellingPoints").value=content.sellingPoints;$("editorScenes").value=content.scenes;$("editorEffects").value=content.effects;$("editorTags").value=content.tags;const effects=parseListText(content.effects);$("productEditorModalEffects").innerHTML=effects.length?effects.map(effect=>`<span class="effectChip">${escapeHtml(effect)}</span>`).join(""):'<span class="effectChip">待补充特效</span>'}
+function openProductEditorModal(productId){const product=products.find(item=>item.id===productId);if(!product)return;state.activeProductEditorId=productId;fillProductEditorModal(product);$("productEditorModal").classList.add("open");document.body.style.overflow="hidden"}
+function closeProductEditorModal(){state.activeProductEditorId="";$("productEditorModal").classList.remove("open");document.body.style.overflow=""}
+function syncProductEditorModal(field,value){const product=currentEditingProduct();if(!product)return;if(!state.productContent[product.id])state.productContent[product.id]=createDefaultProductContent(product);state.productContent[product.id][field]=value;if(field==="effects"){const effects=parseListText(value);$("productEditorModalEffects").innerHTML=effects.length?effects.map(effect=>`<span class="effectChip">${escapeHtml(effect)}</span>`).join(""):'<span class="effectChip">待补充特效</span>'}renderProductEditors();renderPreview()}
+function renderProductEditors(){ensureProductContentDefaults();const list=picked();$("productEditorCount").textContent=`${list.length} 个商品`;if(!list.length){$("productEditors").innerHTML='<div class="emptyState">请先在第 1 步选择商品，系统会在这里按商品生成内容编辑卡片。</div>';return}$("productEditors").innerHTML=list.map(product=>{const content=getProductContent(product);const effects=parseListText(content.effects);const tags=parseListText(content.tags);const scenes=parseListText(content.scenes);return `<article class="productEditorCard" data-product-editor="${product.id}"><div class="productEditorTop"><div class="productEditorTitle"><strong>${escapeHtml(product.name)}</strong><div class="productEditorMeta">${escapeHtml(product.spec)} · ${escapeHtml(product.store)} · ${escapeHtml(product.channel)}</div></div><span class="chip">${escapeHtml(product.flavor || product.category)}</span></div><div class="productEditorPreview"><div class="productEffectRow">${effects.length?effects.slice(0,3).map(effect=>`<span class="effectChip">${escapeHtml(effect)}</span>`).join(""):'<span class="effectChip">待补充特效</span>'}</div><button type="button" class="btn s productEditorToggle" data-open-editor="${product.id}">编辑</button><p>${escapeHtml(content.subtitle || "点击编辑后补充一句话优势")}</p><div class="productEditorMeta">标签：${escapeHtml((tags.slice(0,4).join(" / ")) || "待补充")} · 场景：${escapeHtml((scenes.slice(0,3).join(" / ")) || "待补充")}</div></div></article>`}).join("");Array.from($("productEditors").querySelectorAll("[data-open-editor]")).forEach(btn=>btn.addEventListener("click",()=>openProductEditorModal(btn.dataset.openEditor)))}
+function parseCaps(){return state.caps.split("\n").map(x=>x.trim()).filter(Boolean).map(x=>{const [a,b,c]=x.split("|").map(y=>y.trim());return[a||"未命名能力",b||"请补充说明",c||"能力"]})}
+function chunkArray(list,size){const result=[];for(let i=0;i<list.length;i+=size)result.push(list.slice(i,i+size));return result}
+function splitTextForPdf(text,maxChars=PRODUCT_PAGE_LIMITS.summaryChars){const source=String(text||"").replace(/\r/g,"").split(/\n+/).map(item=>item.trim()).filter(Boolean);if(!source.length)return[""];const segments=[];source.forEach(block=>{let remaining=block;while(remaining.length>maxChars){const slice=remaining.slice(0,maxChars);const marks=[slice.lastIndexOf("。"),slice.lastIndexOf("；"),slice.lastIndexOf("，"),slice.lastIndexOf("、"),slice.lastIndexOf(" ")].filter(index=>index>Math.floor(maxChars*.45));const cut=marks.length?Math.max(...marks)+1:maxChars;segments.push(remaining.slice(0,cut).trim());remaining=remaining.slice(cut).trim()}if(remaining)segments.push(remaining)});return segments}
+function formatDeckPageNo(index){return `P${String(index+1).padStart(2,"0")}`}
+function baseFixedPages(){return [...fixedDeckPages.slice(0,12).map((page,idx)=>({...page,id:`fixed-${idx+1}`,source:"fixed"})),{...fixedDeckPages[12],id:"fixed-32",source:"fixed"}]}
+function buildProductPages(product,scene,productIndex){const enriched=enrichedProduct(product);const tags=uniqueTags([...(state.tags||"").split(",").map(x=>x.trim()).filter(Boolean),...(enriched.tags||[]),...(enriched.promoTags||[])]);const focusItems=(enriched.promoBullets&&enriched.promoBullets.length?enriched.promoBullets:productFocus(enriched));const detailItems=uniqueTags([...(enriched.promoBullets&&enriched.promoBullets.length?enriched.promoBullets:(enriched.highlights||[])),...parseCaps().map(cap=>`${cap[0]}：${cap[1]}`)]);const summarySegments=splitTextForPdf(enriched.promoSummary||enriched.detail);const tagChunks=chunkArray(tags,PRODUCT_PAGE_LIMITS.tags);const effectChunks=chunkArray(enriched.promoEffects||[],PRODUCT_PAGE_LIMITS.effects);const focusChunks=chunkArray(focusItems,PRODUCT_PAGE_LIMITS.focus);const sceneChunks=chunkArray(enriched.promoScenes||[],PRODUCT_PAGE_LIMITS.scenes);const detailChunks=chunkArray(detailItems,PRODUCT_PAGE_LIMITS.detailBullets);const total=Math.max(1,summarySegments.length,tagChunks.length,effectChunks.length,focusChunks.length,sceneChunks.length,detailChunks.length);return Array.from({length:total},(_,segmentIndex)=>({id:`product-${enriched.id}-${segmentIndex+1}`,source:"product",kind:"product",product:enriched,scene,pageIndex:segmentIndex,totalSegments:total,thumb:total>1?`${enriched.name} ${segmentIndex+1}/${total}`:`商品页 ${productIndex+1}`,title:enriched.name,subtitle:segmentIndex===0?(enriched.promoSubtitle||`${scene.name} · ${enriched.spec}`):`${enriched.name} · 内容续页 ${segmentIndex+1}/${total}`,desc:summarySegments[segmentIndex]||"",stats:[formatPrice(enriched.price),enriched.store,enriched.channel],tags:tagChunks[segmentIndex]||[],effects:effectChunks[segmentIndex]||[],focus:focusChunks[segmentIndex]||[],scenes:sceneChunks[segmentIndex]||[],detailBullets:detailChunks[segmentIndex]||[],caps:parseCaps()}))}
+function buildBaseDeckPages(){syncForm();const scene=scenes[state.scene]||{name:"未选择场景",audience:"未选择",output:"未生成"};const selectedProducts=picked();return [...baseFixedPages().slice(0,12),...selectedProducts.flatMap((product,index)=>buildProductPages(product,scene,index)),baseFixedPages()[12]]}
+function resolveDeckPages(){const basePages=buildBaseDeckPages();const pageMap=new Map(basePages.map(page=>[page.id,page]));state.pageOrder=state.pageOrder.filter(id=>pageMap.has(id));basePages.forEach(page=>{if(!state.pageOrder.includes(page.id))state.pageOrder.push(page.id)});state.deletedPageIds=state.deletedPageIds.filter(id=>pageMap.has(id));state.pageOverrides=Object.fromEntries(Object.entries(state.pageOverrides).filter(([id])=>pageMap.has(id)));const visible=state.pageOrder.filter(id=>!state.deletedPageIds.includes(id)).map(id=>pageMap.get(id)).filter(Boolean);return visible.map((page,index)=>({...page,pageNo:formatDeckPageNo(index),thumb:page.thumb||page.title,visibleIndex:index}))}
+function buildDeckPages(){return resolveDeckPages()}
+function currentDeckPage(){const pages=buildDeckPages();return pages[state.deckIndex]||null}
+function renderDeckPage(page){const override=state.pageOverrides[page.id];if(override&&override.src){return `<div class="ppt"><div class="pptTop"><span class="pptBrand">BONELESS MAN · 脱骨侠</span><span class="pptNo">${page.pageNo}</span></div><div class="pptReplacedBody"><p class="pptSub">${page.title}</p><div class="pptReplacedVisual"><img src="${override.src}" alt="${escapeAttr(page.title)}" loading="lazy"></div><p class="pptDesc">当前页已替换为图片：${escapeHtml(override.name||"本地图片")}。导出 PDF 时将按该图片展示。</p></div></div>`}if(page.kind==="cover"){return `<div class="ppt cover"><div class="pptTop"><span class="pptBrand">BONELESS MAN · 脱骨侠</span><span class="pptNo">${page.pageNo}</span></div><div class="pptBody"><p class="pptSub">${page.subtitle}</p><h3 class="pptTitle">${page.title}</h3><p class="pptDesc">${page.desc}</p><div class="pptStats"><div class="pptStat"><span>品牌名称</span><strong>脱骨侠</strong></div><div class="pptStat"><span>数据来源</span><strong>外包商品列表.xls</strong></div><div class="pptStat"><span>参考结构</span><strong>脱骨侠产品手册</strong></div></div></div></div>`}if(page.kind==="divider"){return `<div class="ppt divider"><div class="pptTop"><span class="pptBrand">BONELESS MAN · 脱骨侠</span><span class="pptNo">${page.pageNo}</span></div><div class="pptBody"><p class="pptSub">${page.subtitle||""}</p><h3 class="pptTitle">${page.title}</h3><p class="pptDesc">${page.desc}</p></div></div>`}if(page.kind==="closing"){return `<div class="ppt"><div class="pptTop"><span class="pptBrand">BONELESS MAN · 脱骨侠</span><span class="pptNo">${page.pageNo}</span></div><div class="pptBody"><p class="pptSub">封底保留页</p><h3 class="pptTitle">${page.title}</h3><p class="pptDesc">${page.desc}</p><div class="pptClosing"><div class="pptChannel"><strong>天猫旗舰店</strong><small>保留原封底扫码渠道位</small></div><div class="pptChannel"><strong>抖音旗舰店</strong><small>保留原封底扫码渠道位</small></div><div class="pptChannel"><strong>小红书</strong><small>保留原封底品牌触点展示</small></div></div></div></div>`}if(page.kind==="product"){return `<div class="ppt pptProductPage"><div class="pptTop"><span class="pptBrand">BONELESS MAN · 脱骨侠</span><span class="pptNo">${page.pageNo}</span></div><div class="pptBody"><div class="pptHero"><div class="pptVisual"><span class="chip pptVisualBadge">${page.totalSegments>1?`商品页 ${page.pageIndex+1}/${page.totalSegments}`:"独立商品宣传页"}</span><img src="${page.product.image}" alt="${escapeAttr(page.title)}" loading="lazy"></div><div class="pptHeroCard"><p class="pptSub">${page.subtitle}</p><h3 class="pptTitle">${page.title}</h3><p class="pptDesc">${page.desc||page.product.detail}</p><div class="pptTags">${page.tags.map(tag=>`<span class="pptTag">${tag}</span>`).join("")}</div>${page.effects.length?`<div class="pptEffectRow">${page.effects.map(effect=>`<span class="pptEffect">${effect}</span>`).join("")}</div>`:""}<div class="pptStats">${page.stats.map((item,idx)=>`<div class="pptStat"><span>重点信息 ${idx+1}</span><strong>${item}</strong></div>`).join("")}</div>${page.focus.length?`<div class="pptFocus">${page.focus.map((item,idx)=>`<div class="pptFocusItem"><span>核心卖点 ${idx+1}</span><strong>${item}</strong></div>`).join("")}</div>`:""}</div></div><div class="pptCols"><div class="pptBox"><h5>商品基础信息</h5><div class="pptTable"><div class="pptCell"><span>商品分类</span><strong>${page.product.category}</strong></div><div class="pptCell"><span>商品规格</span><strong>${page.product.spec}</strong></div><div class="pptCell"><span>主打口味</span><strong>${page.product.flavor}</strong></div><div class="pptCell"><span>适用渠道</span><strong>${page.product.channel}</strong></div><div class="pptCell"><span>保存方式</span><strong>${page.product.store}</strong></div><div class="pptCell"><span>业务版本</span><strong>${page.scene.name}</strong></div><div class="pptCell"><span>商品69码</span><strong>${page.product.barcode69||"-"}</strong></div></div></div><div class="pptBox"><h5>场景表达与服务能力</h5>${page.scenes.length?`<div class="pptTags">${page.scenes.map(scene=>`<span class="pptTag">${scene}</span>`).join("")}</div>`:""}<ul>${page.detailBullets.map(item=>`<li>${item}</li>`).join("")}</ul><div class="pptLead">${state.manualSummary || page.scene.summary}</div></div></div></div></div>`}return `<div class="ppt"><div class="pptTop"><span class="pptBrand">BONELESS MAN · 脱骨侠</span><span class="pptNo">${page.pageNo}</span></div><div class="pptBody"><h3 class="pptTitle">${page.title}</h3><p class="pptDesc">${page.desc}</p><div class="pptBox"><h5>保留内容要点</h5><ul>${(page.bullets||[]).map(item=>`<li>${item}</li>`).join("")}</ul></div></div></div>`}
+function swapPageOrder(currentId,targetId){const currentIndex=state.pageOrder.indexOf(currentId);const targetIndex=state.pageOrder.indexOf(targetId);if(currentIndex<0||targetIndex<0)return;[state.pageOrder[currentIndex],state.pageOrder[targetIndex]]=[state.pageOrder[targetIndex],state.pageOrder[currentIndex]]}
+function moveCurrentPage(direction){const pages=buildDeckPages();const current=pages[state.deckIndex];if(!current)return;const visibleIds=pages.map(page=>page.id);const currentVisibleIndex=visibleIds.indexOf(current.id);const targetVisibleIndex=currentVisibleIndex+direction;if(targetVisibleIndex<0||targetVisibleIndex>=visibleIds.length)return;swapPageOrder(current.id,visibleIds[targetVisibleIndex]);state.deckIndex=targetVisibleIndex;renderPreview()}
+function deleteCurrentPage(){const pages=buildDeckPages();const current=pages[state.deckIndex];if(!current)return;if(!state.deletedPageIds.includes(current.id))state.deletedPageIds.push(current.id);const nextPages=buildDeckPages();state.deckIndex=Math.min(state.deckIndex,Math.max(0,nextPages.length-1));renderPreview()}
+function replaceCurrentPage(){const current=currentDeckPage();if(!current)return;state.pendingReplacePageId=current.id;$("pageReplaceInput").value="";$("pageReplaceInput").click()}
+function restoreCurrentPage(){const current=currentDeckPage();if(!current)return;delete state.pageOverrides[current.id];renderPreview()}
+function handlePageReplacement(file){if(!file||!state.pendingReplacePageId)return;const reader=new FileReader();reader.onload=()=>{state.pageOverrides[state.pendingReplacePageId]={src:String(reader.result||""),name:file.name};state.pendingReplacePageId="";renderPreview()};reader.readAsDataURL(file)}
+function renderDeck(){const pages=buildDeckPages();if(!pages.length){$("deckTitle").textContent=state.manualTitle||"脱骨侠产品手册在线预览";$("deckSub").textContent="当前没有可展示页面";$("pageActionHint").textContent=`原 PDF 单页尺寸 ${PDF_PAGE_SIZE.width} × ${PDF_PAGE_SIZE.height}，当前已无可导出页面`;$("deckThumbs").innerHTML="";$("deckPage").innerHTML='<div class="emptyState">当前页面已全部删除。<br>请返回上一步或刷新页面重新生成。</div>';$("deckIndicator").textContent="0 / 0";["deckPrevBtn","deckNextBtn","pageReplaceBtn","pageRestoreBtn","pageMoveUpBtn","pageMoveDownBtn","pageDeleteBtn"].forEach(id=>$(id).disabled=true);return}if(state.deckIndex>=pages.length)state.deckIndex=pages.length-1;if(state.deckIndex<0)state.deckIndex=0;const current=pages[state.deckIndex];const replaced=Boolean(state.pageOverrides[current.id]);$("deckTitle").textContent=state.manualTitle||"脱骨侠产品手册在线预览";$("deckSub").textContent=`固定页保留，商品页按 ${PDF_PAGE_SIZE.width} × ${PDF_PAGE_SIZE.height} 自动分页；当前共 ${pages.length} 页`;$("pageActionHint").textContent=`当前页：${current.pageNo} · ${current.title}${state.deletedPageIds.length?`；已隐藏 ${state.deletedPageIds.length} 页`:''}`;$("deckThumbs").innerHTML=pages.map((page,idx)=>`<button type="button" class="thumb${idx===state.deckIndex?" active":""}" data-idx="${idx}"><strong>${page.pageNo} · ${page.thumb}</strong><small>${page.title}${state.pageOverrides[page.id]?" · 已替换":""}</small></button>`).join("");$("deckPage").innerHTML=renderDeckPage(current);$("deckIndicator").textContent=`${state.deckIndex+1} / ${pages.length}`;Array.from($("deckThumbs").querySelectorAll(".thumb")).forEach(btn=>btn.onclick=()=>{state.deckIndex=+btn.dataset.idx;renderDeck()});$("deckPrevBtn").disabled=state.deckIndex===0;$("deckNextBtn").disabled=state.deckIndex===pages.length-1;$("pageMoveUpBtn").disabled=state.deckIndex===0;$("pageMoveDownBtn").disabled=state.deckIndex===pages.length-1;$("pageDeleteBtn").disabled=false;$("pageReplaceBtn").disabled=false;$("pageRestoreBtn").disabled=!replaced}
+function renderPreview(){renderDeck();renderSide();persist()}
+function renderSide(){const list=picked();$("sideProductCount").textContent=list.length;if(!list.length){$("sideProductsList").innerHTML='<div class="emptyState">当前还没有选择商品。<br>可在左侧商品卡片中逐个加入，或使用“全选当前结果”快速勾选。</div>';return}$("sideProductsList").innerHTML=list.map(p=>`<div class="selectedProductItem"><div class="selectedProductRow"><strong>${p.name}</strong><button type="button" class="sideRemoveBtn" data-remove-side="${p.id}" ${list.length===1?"disabled":""}>移除</button></div><div class="selectedProductMeta">${p.spec} · ${p.store} · ${p.channel}</div></div>`).join("");Array.from($("sideProductsList").querySelectorAll("[data-remove-side]")).forEach(btn=>btn.onclick=()=>removeSelectedProduct(btn.dataset.removeSide,{keepOne:true}))}
+function renderNav(){const map={1:"请选择商品后继续",2:"请选择用户场景后继续",3:"补充手册内容后进入预览",4:"确认预览后进入导出/分享",5:"可以导出或打开移动端查看"};$("navHint").textContent=map[state.step];$("prevBtn").disabled=state.step===1;$("nextBtn").disabled=(state.step===1&&!state.selected.length)||(state.step===2&&!state.scene)||state.step===5;$("nextBtn").textContent=state.step===5?"已完成":"下一步"}
+function persist(){const s=scenes[state.scene]||null;const selected=picked().map(product=>{const enriched=enrichedProduct(product);return {...enriched,priceLabel:formatPrice(enriched.price),focus:enriched.promoBullets&&enriched.promoBullets.length?enriched.promoBullets.slice(0,3):productFocus(enriched)}});const deckPages=buildDeckPages();const mobile={brand:"脱骨侠",activeScene:"manual",scenes:{manual:{sceneKey:state.scene||"",sceneName:s?s.name:"未选择场景",audience:s?s.audience:"未选择",output:s?s.output:"未生成",title:state.manualTitle||"产品手册",summary:state.manualSummary||"",s1:state.stat1||"-",s2:state.stat2||"-",s3:state.stat3||"-",share:state.shareMode||"分享链接",tags:state.tags||"",insertedCount:selected.length,totalPages:deckPages.length,products:selected,services:parseCaps().map(cap=>({title:cap[0],desc:cap[1],label:cap[2]}))}},lastSyncAt:new Date().toLocaleString("zh-CN",{hour12:false})};localStorage.setItem(KEY,JSON.stringify(mobile));const frame=$("previewFrame");if(frame&&frame.contentWindow)frame.contentWindow.postMessage({type:MOBILE_SYNC_EVENT,payload:mobile},"*");$("shareLink").textContent=`https://manual.demo/share/${encodeURIComponent((state.manualTitle||"产品手册").replace(/\s+/g,"-"))}`;$("versionText").textContent=state.version}
+function qr(){for(let i=0;i<81;i++){const c=document.createElement("i");if(Math.random()>.58||[0,1,2,9,18,10,20,27,28,29,53,54,55,60,61,62,69,78,70,80].includes(i))c.style.opacity="1";$("qr").appendChild(c)}}
+["manualTitle","manualSummary","stat1","stat2","stat3","shareMode","tags","caps"].forEach(id=>$(id).addEventListener("input",renderPreview));
+$("deckPrevBtn").onclick=()=>{if(state.deckIndex>0){state.deckIndex-=1;renderDeck()}};$("deckNextBtn").onclick=()=>{const total=buildDeckPages().length;if(state.deckIndex<total-1){state.deckIndex+=1;renderDeck()}};
+$("prevBtn").onclick=()=>state.step>1&&go(state.step-1);$("nextBtn").onclick=()=>state.step<5&&go(state.step+1);$("exportBtn").onclick=()=>{const pages=buildDeckPages();if(!pages.length){alert("当前没有可导出的页面。");return}alert(`这里模拟导出 PDF。\n导出页数：${pages.length} 页\n页面顺序已按当前预览顺序输出\n已删除页面不会出现在导出结果中${Object.keys(state.pageOverrides).length?`\n已替换页面：${Object.keys(state.pageOverrides).length} 页`:""}`)};$("copyLinkBtn").onclick=async()=>{try{await navigator.clipboard.writeText($("shareLink").textContent);$("copyLinkBtn").textContent="链接已复制"}catch(e){$("copyLinkBtn").textContent="请手动复制"}setTimeout(()=>$("copyLinkBtn").textContent="复制分享链接",1400)};$("openMobileBtn").onclick=()=>location.href=MOBILE_PREVIEW_PATH;Array.from(document.querySelectorAll(".switchBtn")).forEach(btn=>btn.onclick=()=>{Array.from(document.querySelectorAll(".switchBtn")).forEach(x=>x.classList.remove("active"));btn.classList.add("active");$("previewViewport").className="previewViewport "+btn.dataset.device});
+qr();renderStepper();renderProductFilters();renderProducts();renderScenes();fillForm();renderFixedContent();renderProductEditors();renderPreview();go(1);
+</script>
+</body>
+</html>
