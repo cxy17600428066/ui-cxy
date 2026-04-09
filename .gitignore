@@ -5,3 +5,5 @@
 .edge-check-tablet/
 .edge-check-tablet-2/
 .edge-headless-workbench/
+.git-auto-sync.pid
+.git-auto-sync.log
