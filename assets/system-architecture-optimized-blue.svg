@@ -1,0 +1,134 @@
+﻿<svg width="1800" height="1240" viewBox="0 0 1800 1240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F7FAFF"/>
+      <stop offset="100%" stop-color="#EDF4FF"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B4EA2"/>
+      <stop offset="100%" stop-color="#1D6FD6"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0B4EA2" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .f { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif; }
+      .layer { font-size: 27px; font-weight: 700; fill: #0A3D8F; }
+      .section { font-size: 22px; font-weight: 700; fill: #0A4C9B; }
+      .txt { font-size: 21px; font-weight: 600; fill: #143B70; }
+      .chip { font-size: 23px; font-weight: 700; fill: #0A4C9B; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1240" fill="url(#bg)"/>
+
+  <rect x="40" y="24" width="1720" height="90" rx="18" fill="url(#title)" filter="url(#soft)"/>
+  <text x="900" y="80" text-anchor="middle" class="f" style="font-size:34px;font-weight:700;fill:#FFFFFF;">一龄浆果健康社区智慧服务信息化平台</text>
+
+  <rect x="40" y="134" width="1720" height="146" rx="18" fill="#FFFFFF" stroke="#A9C8F5" stroke-width="2" filter="url(#soft)"/>
+  <text x="74" y="176" class="f layer">接入层</text>
+  <rect x="220" y="198" width="180" height="60" rx="12" fill="#EAF3FF" stroke="#98BBEE"/>
+  <rect x="500" y="198" width="180" height="60" rx="12" fill="#EAF3FF" stroke="#98BBEE"/>
+  <rect x="780" y="198" width="180" height="60" rx="12" fill="#EAF3FF" stroke="#98BBEE"/>
+  <rect x="1060" y="198" width="180" height="60" rx="12" fill="#EAF3FF" stroke="#98BBEE"/>
+  <text x="310" y="236" text-anchor="middle" class="f chip">客户端</text>
+  <text x="590" y="236" text-anchor="middle" class="f chip">PC端</text>
+  <text x="870" y="236" text-anchor="middle" class="f chip">小程序</text>
+  <text x="1150" y="236" text-anchor="middle" class="f chip">APP</text>
+
+  <rect x="40" y="300" width="1720" height="360" rx="18" fill="#FFFFFF" stroke="#A9C8F5" stroke-width="2" filter="url(#soft)"/>
+  <text x="74" y="342" class="f layer">智能应用层</text>
+
+  <rect x="80" y="360" width="820" height="280" rx="14" fill="#F5FAFF" stroke="#B8D0F3"/>
+  <text x="112" y="398" class="f section">AI赋能</text>
+
+  <rect x="130" y="422" width="220" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="380" y="422" width="220" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="630" y="422" width="220" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="130" y="526" width="220" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="380" y="526" width="220" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="630" y="526" width="220" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+
+  <text x="240" y="472" text-anchor="middle" class="f txt">数字员工分身</text>
+  <text x="490" y="460" text-anchor="middle" class="f txt">AI线上</text>
+  <text x="490" y="488" text-anchor="middle" class="f txt">客服</text>
+  <text x="740" y="460" text-anchor="middle" class="f txt">辅助个人</text>
+  <text x="740" y="488" text-anchor="middle" class="f txt">健康建议</text>
+  <text x="240" y="576" text-anchor="middle" class="f txt">辅助诊断</text>
+  <text x="490" y="564" text-anchor="middle" class="f txt">辅助病例</text>
+  <text x="490" y="592" text-anchor="middle" class="f txt">记录书写</text>
+  <text x="740" y="564" text-anchor="middle" class="f txt">辅助体检</text>
+  <text x="740" y="592" text-anchor="middle" class="f txt">报告</text>
+
+  <rect x="920" y="360" width="800" height="280" rx="14" fill="#F5FAFF" stroke="#B8D0F3"/>
+  <text x="952" y="398" class="f section">特色工作站</text>
+
+  <rect x="950" y="422" width="170" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="1140" y="422" width="170" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="1330" y="422" width="170" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="1520" y="422" width="170" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="1045" y="526" width="170" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="1235" y="526" width="170" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="1425" y="526" width="170" height="84" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+
+  <text x="1035" y="458" text-anchor="middle" class="f txt">门诊医生</text>
+  <text x="1035" y="486" text-anchor="middle" class="f txt">工作站</text>
+  <text x="1225" y="458" text-anchor="middle" class="f txt">门诊护士</text>
+  <text x="1225" y="486" text-anchor="middle" class="f txt">工作站</text>
+  <text x="1415" y="472" text-anchor="middle" class="f txt">体检工作站</text>
+  <text x="1605" y="472" text-anchor="middle" class="f txt">代谢工作站</text>
+  <text x="1130" y="562" text-anchor="middle" class="f txt">营养医学</text>
+  <text x="1130" y="590" text-anchor="middle" class="f txt">工作站</text>
+  <text x="1320" y="562" text-anchor="middle" class="f txt">运动医学</text>
+  <text x="1320" y="590" text-anchor="middle" class="f txt">工作站</text>
+  <text x="1510" y="562" text-anchor="middle" class="f txt">艾灸医学</text>
+  <text x="1510" y="590" text-anchor="middle" class="f txt">工作站</text>
+
+  <rect x="40" y="680" width="1720" height="330" rx="18" fill="#FFFFFF" stroke="#A9C8F5" stroke-width="2" filter="url(#soft)"/>
+  <text x="74" y="722" class="f layer">服务层</text>
+
+  <rect x="80" y="740" width="1040" height="250" rx="14" fill="#F5FAFF" stroke="#B8D0F3"/>
+  <text x="112" y="778" class="f section">运营中心</text>
+  <rect x="130" y="800" width="190" height="74" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="350" y="800" width="190" height="74" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="570" y="800" width="190" height="74" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="790" y="800" width="190" height="74" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="240" y="896" width="190" height="74" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="460" y="896" width="190" height="74" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="680" y="896" width="190" height="74" rx="12" fill="#FFFFFF" stroke="#A9C8F5"/>
+
+  <text x="225" y="846" text-anchor="middle" class="f txt">客户管理</text>
+  <text x="445" y="846" text-anchor="middle" class="f txt">财务管理</text>
+  <text x="665" y="846" text-anchor="middle" class="f txt">统计分析</text>
+  <text x="885" y="846" text-anchor="middle" class="f txt">电子文书</text>
+  <text x="335" y="942" text-anchor="middle" class="f txt">供应链管理</text>
+  <text x="555" y="942" text-anchor="middle" class="f txt">排程管理</text>
+  <text x="775" y="942" text-anchor="middle" class="f txt">健康管理</text>
+
+  <rect x="1140" y="740" width="580" height="250" rx="14" fill="#F5FAFF" stroke="#B8D0F3"/>
+  <text x="1172" y="778" class="f section">业务支撑</text>
+  <rect x="1180" y="806" width="500" height="52" rx="10" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="1180" y="874" width="500" height="52" rx="10" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <rect x="1180" y="942" width="500" height="52" rx="10" fill="#FFFFFF" stroke="#A9C8F5"/>
+  <text x="1430" y="840" text-anchor="middle" class="f txt">IoT物联网工作站</text>
+  <text x="1430" y="908" text-anchor="middle" class="f txt">工单系统</text>
+  <text x="1430" y="976" text-anchor="middle" class="f txt">远程会诊</text>
+
+  <rect x="40" y="1030" width="1720" height="182" rx="18" fill="#FFFFFF" stroke="#A9C8F5" stroke-width="2" filter="url(#soft)"/>
+  <text x="74" y="1072" class="f layer">数据层</text>
+
+  <rect x="220" y="1088" width="300" height="86" rx="12" fill="#EAF3FF" stroke="#98BBEE"/>
+  <rect x="560" y="1088" width="300" height="86" rx="12" fill="#EAF3FF" stroke="#98BBEE"/>
+  <rect x="900" y="1088" width="300" height="86" rx="12" fill="#EAF3FF" stroke="#98BBEE"/>
+  <rect x="1240" y="1088" width="300" height="86" rx="12" fill="#EAF3FF" stroke="#98BBEE"/>
+
+  <text x="370" y="1140" text-anchor="middle" class="f chip">数据库</text>
+  <text x="710" y="1140" text-anchor="middle" class="f chip">Redis缓存服务</text>
+  <text x="1050" y="1140" text-anchor="middle" class="f chip">MySQL数据服务</text>
+  <text x="1390" y="1140" text-anchor="middle" class="f chip">文件服务</text>
+
+  <line x1="900" y1="114" x2="900" y2="134" stroke="#78A9E7" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="900" y1="280" x2="900" y2="300" stroke="#78A9E7" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="900" y1="660" x2="900" y2="680" stroke="#78A9E7" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="900" y1="1010" x2="900" y2="1030" stroke="#78A9E7" stroke-width="2" stroke-dasharray="6 6"/>
+</svg>

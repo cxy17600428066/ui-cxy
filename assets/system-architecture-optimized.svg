@@ -1,0 +1,147 @@
+﻿<svg width="1800" height="1220" viewBox="0 0 1800 1220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#EEF2FF"/>
+    </linearGradient>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .font-main { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif; }
+      .layer-title { font-size: 28px; font-weight: 700; fill: #0F172A; }
+      .section-title { font-size: 22px; font-weight: 700; fill: #0F172A; }
+      .card-text { font-size: 24px; font-weight: 600; fill: #0F172A; }
+      .small-card-text { font-size: 22px; font-weight: 600; fill: #1F2937; }
+      .subtitle { font-size: 20px; font-weight: 600; fill: #334155; }
+      .chip-text { font-size: 22px; font-weight: 600; fill: #0B3B66; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1220" fill="url(#bgGrad)"/>
+
+  <rect x="40" y="24" width="1720" height="94" rx="20" fill="url(#titleGrad)" filter="url(#shadow)"/>
+  <text x="900" y="82" text-anchor="middle" class="font-main" style="font-size:34px;font-weight:700;fill:#FFFFFF;">一龄浆果健康社区智慧服务信息化平台</text>
+
+  <rect x="40" y="140" width="1720" height="140" rx="20" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="2" filter="url(#shadow)"/>
+  <text x="76" y="182" class="font-main layer-title">接入层</text>
+
+  <rect x="120" y="202" width="170" height="56" rx="14" fill="#EFF6FF" stroke="#93C5FD"/>
+  <rect x="320" y="202" width="170" height="56" rx="14" fill="#EFF6FF" stroke="#93C5FD"/>
+  <rect x="520" y="202" width="170" height="56" rx="14" fill="#EFF6FF" stroke="#93C5FD"/>
+  <rect x="720" y="202" width="170" height="56" rx="14" fill="#EFF6FF" stroke="#93C5FD"/>
+  <text x="205" y="238" text-anchor="middle" class="font-main chip-text">客户端</text>
+  <text x="405" y="238" text-anchor="middle" class="font-main chip-text">PC端</text>
+  <text x="605" y="238" text-anchor="middle" class="font-main chip-text">小程序</text>
+  <text x="805" y="238" text-anchor="middle" class="font-main chip-text">APP</text>
+
+  <rect x="40" y="300" width="1720" height="340" rx="20" fill="#FFFFFF" stroke="#C7D2FE" stroke-width="2" filter="url(#shadow)"/>
+  <text x="76" y="342" class="font-main layer-title">智能应用层</text>
+
+  <rect x="80" y="360" width="790" height="250" rx="16" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="112" y="398" class="font-main section-title">AI赋能</text>
+
+  <g>
+    <rect x="120" y="420" width="220" height="76" rx="12" fill="#ECFEFF" stroke="#67E8F9"/>
+    <rect x="360" y="420" width="220" height="76" rx="12" fill="#ECFEFF" stroke="#67E8F9"/>
+    <rect x="600" y="420" width="220" height="76" rx="12" fill="#ECFEFF" stroke="#67E8F9"/>
+
+    <rect x="120" y="514" width="220" height="76" rx="12" fill="#ECFEFF" stroke="#67E8F9"/>
+    <rect x="360" y="514" width="220" height="76" rx="12" fill="#ECFEFF" stroke="#67E8F9"/>
+    <rect x="600" y="514" width="220" height="76" rx="12" fill="#ECFEFF" stroke="#67E8F9"/>
+
+    <text x="230" y="468" text-anchor="middle" class="font-main small-card-text">数字员工分身</text>
+    <text x="470" y="456" text-anchor="middle" class="font-main small-card-text">AI线上</text>
+    <text x="470" y="484" text-anchor="middle" class="font-main small-card-text">客服</text>
+    <text x="710" y="456" text-anchor="middle" class="font-main small-card-text">辅助个人</text>
+    <text x="710" y="484" text-anchor="middle" class="font-main small-card-text">健康建议</text>
+
+    <text x="230" y="560" text-anchor="middle" class="font-main small-card-text">辅助诊断</text>
+    <text x="470" y="548" text-anchor="middle" class="font-main small-card-text">辅助病例</text>
+    <text x="470" y="576" text-anchor="middle" class="font-main small-card-text">记录书写</text>
+    <text x="710" y="548" text-anchor="middle" class="font-main small-card-text">辅助体</text>
+    <text x="710" y="576" text-anchor="middle" class="font-main small-card-text">检报告</text>
+  </g>
+
+  <rect x="900" y="360" width="820" height="250" rx="16" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="932" y="398" class="font-main section-title">特色工作站</text>
+
+  <g>
+    <rect x="940" y="420" width="180" height="76" rx="12" fill="#FFF7ED" stroke="#FDBA74"/>
+    <rect x="1140" y="420" width="180" height="76" rx="12" fill="#FFF7ED" stroke="#FDBA74"/>
+    <rect x="1340" y="420" width="180" height="76" rx="12" fill="#FFF7ED" stroke="#FDBA74"/>
+    <rect x="1540" y="420" width="140" height="76" rx="12" fill="#FFF7ED" stroke="#FDBA74"/>
+
+    <rect x="940" y="514" width="180" height="76" rx="12" fill="#FFF7ED" stroke="#FDBA74"/>
+    <rect x="1140" y="514" width="180" height="76" rx="12" fill="#FFF7ED" stroke="#FDBA74"/>
+    <rect x="1340" y="514" width="180" height="76" rx="12" fill="#FFF7ED" stroke="#FDBA74"/>
+
+    <text x="1030" y="456" text-anchor="middle" class="font-main small-card-text">门诊医生工作站</text>
+    <text x="1230" y="456" text-anchor="middle" class="font-main small-card-text">门诊护士工作站</text>
+    <text x="1430" y="456" text-anchor="middle" class="font-main small-card-text">体检工作站</text>
+    <text x="1610" y="456" text-anchor="middle" class="font-main small-card-text">代谢工作站</text>
+
+    <text x="1030" y="550" text-anchor="middle" class="font-main small-card-text">营养医学工作站</text>
+    <text x="1230" y="550" text-anchor="middle" class="font-main small-card-text">运动医学工作站</text>
+    <text x="1430" y="550" text-anchor="middle" class="font-main small-card-text">艾灸医学工作站</text>
+  </g>
+
+  <rect x="40" y="660" width="1720" height="300" rx="20" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="2" filter="url(#shadow)"/>
+  <text x="76" y="702" class="font-main layer-title">服务层</text>
+
+  <rect x="80" y="720" width="1020" height="220" rx="16" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="112" y="758" class="font-main section-title">运营中心</text>
+
+  <g>
+    <rect x="120" y="780" width="180" height="64" rx="12" fill="#F5F3FF" stroke="#C4B5FD"/>
+    <rect x="320" y="780" width="180" height="64" rx="12" fill="#F5F3FF" stroke="#C4B5FD"/>
+    <rect x="520" y="780" width="180" height="64" rx="12" fill="#F5F3FF" stroke="#C4B5FD"/>
+    <rect x="720" y="780" width="180" height="64" rx="12" fill="#F5F3FF" stroke="#C4B5FD"/>
+
+    <rect x="220" y="860" width="180" height="64" rx="12" fill="#F5F3FF" stroke="#C4B5FD"/>
+    <rect x="420" y="860" width="180" height="64" rx="12" fill="#F5F3FF" stroke="#C4B5FD"/>
+    <rect x="620" y="860" width="180" height="64" rx="12" fill="#F5F3FF" stroke="#C4B5FD"/>
+
+    <text x="210" y="820" text-anchor="middle" class="font-main small-card-text">客户管理</text>
+    <text x="410" y="820" text-anchor="middle" class="font-main small-card-text">财务管理</text>
+    <text x="610" y="820" text-anchor="middle" class="font-main small-card-text">统计分析</text>
+    <text x="810" y="820" text-anchor="middle" class="font-main small-card-text">电子文书</text>
+
+    <text x="310" y="900" text-anchor="middle" class="font-main small-card-text">供应链管理</text>
+    <text x="510" y="900" text-anchor="middle" class="font-main small-card-text">排程管理</text>
+    <text x="710" y="900" text-anchor="middle" class="font-main small-card-text">健康管理</text>
+  </g>
+
+  <rect x="1140" y="720" width="580" height="220" rx="16" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="1172" y="758" class="font-main section-title">业务支撑</text>
+
+  <rect x="1180" y="780" width="500" height="44" rx="10" fill="#EEF2FF" stroke="#A5B4FC"/>
+  <rect x="1180" y="838" width="500" height="44" rx="10" fill="#EEF2FF" stroke="#A5B4FC"/>
+  <rect x="1180" y="896" width="500" height="44" rx="10" fill="#EEF2FF" stroke="#A5B4FC"/>
+
+  <text x="1430" y="810" text-anchor="middle" class="font-main subtitle">IoT物联网工作站</text>
+  <text x="1430" y="868" text-anchor="middle" class="font-main subtitle">工单系统</text>
+  <text x="1430" y="926" text-anchor="middle" class="font-main subtitle">远程会诊</text>
+
+  <rect x="40" y="980" width="1720" height="190" rx="20" fill="#FFFFFF" stroke="#99F6E4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="76" y="1022" class="font-main layer-title">数据层</text>
+
+  <rect x="120" y="1042" width="240" height="78" rx="14" fill="#F0FDFA" stroke="#5EEAD4"/>
+  <rect x="390" y="1042" width="240" height="78" rx="14" fill="#F0FDFA" stroke="#5EEAD4"/>
+  <rect x="660" y="1042" width="240" height="78" rx="14" fill="#F0FDFA" stroke="#5EEAD4"/>
+  <rect x="930" y="1042" width="260" height="78" rx="14" fill="#F0FDFA" stroke="#5EEAD4"/>
+
+  <text x="240" y="1088" text-anchor="middle" class="font-main card-text">数据库</text>
+  <text x="510" y="1088" text-anchor="middle" class="font-main card-text">Redis缓存服务</text>
+  <text x="780" y="1088" text-anchor="middle" class="font-main card-text">MySQL数据服务</text>
+  <text x="1060" y="1088" text-anchor="middle" class="font-main card-text">文件服务</text>
+
+  <line x1="900" y1="120" x2="900" y2="140" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="900" y1="280" x2="900" y2="300" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="900" y1="640" x2="900" y2="660" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="900" y1="960" x2="900" y2="980" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 6"/>
+</svg>

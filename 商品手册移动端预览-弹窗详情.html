@@ -1,0 +1,607 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>脱骨侠商品选品页</title>
+<style>
+:root{
+  --bg:#edf3f8;
+  --card:rgba(255,255,255,.94);
+  --line:#d9e4ef;
+  --txt:#132033;
+  --muted:#607086;
+  --brand:#2258f6;
+  --brand2:#3c8dff;
+  --soft:#eef4ff;
+  --ok:#149c6e;
+  --warn:#ff9a3d;
+  --danger:#d92d20;
+  --shadow:0 12px 28px rgba(16,36,82,.06),0 3px 10px rgba(16,36,82,.04);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--txt);
+  font-family:"Segoe UI Variable","PingFang SC","Microsoft YaHei",sans-serif;
+  background:
+    radial-gradient(circle at top left,rgba(60,141,255,.14),transparent 28%),
+    radial-gradient(circle at top right,rgba(17,134,124,.10),transparent 24%),
+    linear-gradient(180deg,#f8fbfe 0%,#edf3f8 36%,#eef4f9 100%);
+}
+.app{
+  max-width:1640px;
+  margin:0 auto;
+  padding:18px;
+  display:grid;
+  gap:14px;
+}
+.topbar,
+.panel,
+.filterbar,
+.product-card,
+.selected-panel,
+.drawer-panel,
+.footer-actions{
+  border:1px solid rgba(194,211,229,.92);
+  border-radius:16px;
+  background:var(--card);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:30;
+  padding:12px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.brand strong{display:block;font-size:18px;line-height:1.2}
+.brand span{display:block;margin-top:2px;font-size:12px;color:var(--muted)}
+.sync{font-size:12px;color:var(--muted);font-weight:700}
+.sync.ok{color:var(--ok)}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:14px;
+  align-items:start;
+}
+.main{display:grid;gap:12px}
+.panel{padding:12px}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+.section-head h2{margin:0;font-size:20px;line-height:1.2}
+.section-head .meta{font-size:12px;color:var(--muted)}
+
+.filterbar{
+  padding:10px;
+  display:grid;
+  gap:10px;
+}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:12px;color:var(--muted);font-weight:800;min-width:44px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  border:1px solid var(--line);
+  background:#fff;
+  color:#4e5969;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+.chip.active{
+  background:var(--soft);
+  border-color:#c7d7ff;
+  color:var(--brand);
+}
+
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.product-card{overflow:hidden}
+.card-media{
+  position:relative;
+  border-bottom:1px solid #e3ebf6;
+  background:radial-gradient(circle at top right,rgba(52,115,255,.14),transparent 38%),linear-gradient(180deg,#fbfdff,#f4f8ff);
+  aspect-ratio:16/10;
+  display:grid;
+  place-items:center;
+  padding:12px;
+}
+.card-media img{display:block;width:100%;height:100%;object-fit:contain}
+.price-badge{
+  position:absolute;
+  left:10px;
+  top:10px;
+  border-radius:999px;
+  background:rgba(143,56,16,.88);
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  padding:5px 8px;
+}
+.card-body{padding:10px}
+.card-title{margin:0;font-size:15px;line-height:1.35}
+.card-sub{margin:5px 0 0;font-size:12px;color:var(--muted);line-height:1.6;min-height:38px}
+.tag-row{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;border:1px solid #e6ebf2;border-radius:999px;padding:4px 8px;color:#4e5969;background:#f2f5fa}
+.card-foot{margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.spec{font-size:12px;color:#4e5969;font-weight:700}
+
+.btn{border:1px solid transparent;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:800;cursor:pointer;transition:.18s ease}
+.btn.primary{background:linear-gradient(135deg,#12317a,#2258f6 58%,#5aa7ff);border-color:#1d4ad2;color:#fff}
+.btn.ghost{background:#fff;border-color:var(--line);color:#344054}
+.btn.warn{background:#fff7f2;border-color:#ffd7b8;color:#ad5b1d}
+.btn.danger{background:#fff2f0;border-color:#f3c6c2;color:var(--danger)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+.selected-panel{
+  position:sticky;
+  top:74px;
+  padding:12px;
+  display:grid;
+  gap:10px;
+}
+.selected-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.selected-head strong{font-size:16px}
+.counter{
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid #d7e4ff;
+  background:var(--soft);
+  color:var(--brand);
+  font-size:11px;
+  font-weight:800;
+}
+.selected-list{display:grid;gap:8px;max-height:56vh;overflow:auto;padding-right:2px}
+.selected-item{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:9px;
+  display:grid;
+  gap:6px;
+}
+.selected-item strong{font-size:13px;line-height:1.4}
+.selected-item .line{font-size:12px;color:var(--muted)}
+.selected-actions{display:flex;gap:6px;flex-wrap:wrap}
+
+.footer-actions{
+  position:sticky;
+  bottom:10px;
+  z-index:25;
+  padding:10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.footer-actions .btn{flex:1 1 160px;text-align:center}
+
+.empty{
+  border:1px dashed #dce4f2;
+  border-radius:12px;
+  background:#fbfcff;
+  color:var(--muted);
+  text-align:center;
+  line-height:1.8;
+  padding:14px;
+  font-size:13px;
+}
+
+.drawer{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  background:rgba(15,23,42,.28);
+  backdrop-filter:blur(4px);
+  display:none;
+  place-items:center;
+  padding:16px;
+}
+.drawer.open{display:grid}
+.drawer-panel{
+  width:min(900px,100%);
+  max-height:90vh;
+  overflow:auto;
+  padding:14px;
+  display:grid;
+  gap:10px;
+}
+.drawer-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.drawer-top h3{margin:0;font-size:22px;line-height:1.25}
+.drawer-meta{font-size:13px;color:var(--muted);line-height:1.75}
+.drawer-main{display:grid;grid-template-columns:280px minmax(0,1fr);gap:12px}
+.drawer-cover{border:1px solid #dfe7f3;border-radius:14px;overflow:hidden;background:radial-gradient(circle at top right,rgba(52,115,255,.14),transparent 38%),linear-gradient(180deg,#fbfdff,#f4f8ff);padding:10px;aspect-ratio:4/3}
+.drawer-cover img{display:block;width:100%;height:100%;object-fit:contain}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.kv-item{border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px}
+.kv-item span{display:block;font-size:11px;color:var(--muted)}
+.kv-item strong{display:block;margin-top:3px;font-size:13px}
+.bullets{margin:0;padding-left:18px;color:var(--muted);line-height:1.75;font-size:13px;display:grid;gap:4px}
+
+@media (max-width:1200px){
+  .layout{grid-template-columns:1fr}
+  .selected-panel{position:static}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .app{padding:12px}
+  .topbar{position:static}
+  .product-grid{grid-template-columns:1fr}
+  .drawer-main{grid-template-columns:1fr}
+  .kv{grid-template-columns:1fr}
+  .footer-actions{bottom:6px}
+}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="topbar">
+    <div class="brand">
+      <strong id="pageTitle">脱骨侠商品选品</strong>
+      <span>像点菜单一样选商品，弱化介绍，突出选品动作</span>
+    </div>
+    <div class="sync" id="syncHint">等待同步</div>
+  </header>
+
+  <div class="layout">
+    <section class="main">
+      <section class="filterbar">
+        <div class="filter-row">
+          <span class="filter-label">渠道</span>
+          <div class="chips" id="channelFilters"></div>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">分类</span>
+          <div class="chips" id="categoryFilters"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <h2>商品菜单</h2>
+          <div class="meta" id="gridMeta">0 个商品</div>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+    </section>
+
+    <aside class="selected-panel">
+      <div class="selected-head">
+        <strong>已选商品</strong>
+        <span class="counter" id="selectedCount">0</span>
+      </div>
+      <div class="selected-actions">
+        <button class="btn ghost" id="clearSelected">清空选择</button>
+        <button class="btn primary" id="copySelected">复制清单</button>
+      </div>
+      <div class="selected-list" id="selectedList"></div>
+    </aside>
+  </div>
+
+  <section class="footer-actions">
+    <button class="btn primary" id="openDrawerFromSelected">查看首个已选详情</button>
+    <button class="btn ghost" id="selectAllVisible">全选当前筛选结果</button>
+    <button class="btn warn" id="deselectAllVisible">取消当前筛选结果</button>
+  </section>
+</main>
+
+<div class="drawer" id="drawer">
+  <article class="drawer-panel">
+    <div class="drawer-top">
+      <div>
+        <h3 id="drawerTitle">商品详情</h3>
+        <div class="drawer-meta" id="drawerMeta">规格 · 保存方式 · 渠道</div>
+      </div>
+      <button class="btn ghost" id="closeDrawer">关闭</button>
+    </div>
+    <div class="drawer-main">
+      <div class="drawer-cover" id="drawerCover"></div>
+      <div>
+        <div class="kv" id="drawerKV"></div>
+        <ul class="bullets" id="drawerBullets"></ul>
+      </div>
+    </div>
+  </article>
+</div>
+
+<script>
+const KEY = "channel-content-platform-demo";
+const MOBILE_SYNC_EVENT = "channel-content-platform-sync";
+
+const fallbackProducts = [
+  {id:"p1",name:"老卤鸭掌 散称单只 秘制潮卤",desc:"老卤系列 · 常温休食",spec:"散称单只 / 袋",scene:"经销商、KA、线下零售",store:"常温 · 9个月",category:"老卤系列",channel:"常温休食",price:"0.00",factoryPrice:"0.78",retailPrice:"1.00",flavor:"秘制潮卤",image:"https://img.zhuoxi.group/19a63eeb7ca2360d8b7000998cf7b06ed15bb73856940a9df6a1ace86d1947f0438.png",tags:["脱骨侠","常温休食","老卤系列"],highlights:["散称灵活订货","适合渠道端陈列补货","卤香浓郁、即开即售"],detail:"标准名称：老卤鸭掌-脱骨侠-散称单只-秘制潮卤-9个月。",barcode69:"6977656954404"},
+  {id:"p2",name:"椒麻三角骨 450g",desc:"椒麻系列 · 冻品休食",spec:"450g / 盒",scene:"电商、KA、经销商",store:"冷冻 · 9个月",category:"椒麻系列",channel:"冻品休食",price:"19.90",factoryPrice:"13.80",retailPrice:"19.90",flavor:"椒麻",image:"https://img.zhuoxi.group/267933c6458e3919828bec5a877893220f7dd004b556cb7707decd2eefba5372241.png",tags:["脱骨侠","椒麻系列","冷冻"],highlights:["椒麻味型辨识度高","适合电商组合购","450g 规格便于家庭分享"],detail:"标准名称：椒麻三角骨-脱骨侠-450克-椒麻-9个月。",barcode69:"6977656954411"},
+  {id:"p3",name:"无骨鸭掌 900g 藤椒",desc:"无骨鸭掌 · 冻品休食",spec:"900g / 罐",scene:"电商、餐饮、KA",store:"冷冻 · 9个月",category:"无骨鸭掌",channel:"冻品休食",price:"43.80",factoryPrice:"31.60",retailPrice:"43.80",flavor:"藤椒",image:"https://img.zhuoxi.group/2c3194c82d8a154fe2c6d95897410e9eb4d91f8108343bb5823d6308df7aa302542.png",tags:["脱骨侠","无骨","藤椒"],highlights:["无骨食用便捷","大规格适合餐饮后厨","藤椒风味适合线上爆品表达"],detail:"标准名称：无骨鸭掌-脱骨侠-900克-藤椒-9个月。",barcode69:"6977656954428"},
+  {id:"p4",name:"虎皮凤爪 2.5kg 卤香",desc:"虎皮凤爪 · 餐饮",spec:"2.5kg / 袋",scene:"餐饮、KA",store:"冷冻 · 12个月",category:"虎皮凤爪",channel:"餐饮",price:"180.00",factoryPrice:"138.00",retailPrice:"180.00",flavor:"卤香",image:"https://img.zhuoxi.group/d9be86a9d3893575afadf602ae543463a12efa1c32da574caf7c89362511e9d6856.png",tags:["脱骨侠","餐饮","商用装"],highlights:["大包装适配后厨备货","适合卤味、小吃、佐餐","冷冻保供周期稳定"],detail:"标准名称：虎皮凤爪-脱骨侠-2.5千克-卤香-12个月。",barcode69:"6977656954435"},
+  {id:"p5",name:"佤味鸡爪 200g",desc:"云南佤味 · 常温休食",spec:"200g / 盒",scene:"电商、经销商、培训",store:"冷藏 · 10天",category:"云南佤味",channel:"常温休食",price:"23.90",factoryPrice:"16.90",retailPrice:"23.90",flavor:"佤味",image:"https://img.zhuoxi.group/bebbc5587d25d4d5473b12f896727b79942c2d1ae7961047b2c26ea24869fdc8163.png",tags:["脱骨侠","冷藏","特色风味"],highlights:["区域特色风味突出","适合电商内容种草","可作为培训版重点讲解 SKU"],detail:"标准名称：佤味鸡爪-脱骨侠-200克-佤味-10天。",barcode69:"6977656954442"},
+  {id:"p6",name:"虎皮凤爪 105g 鲍汁味",desc:"虎皮凤爪 · 常温休食",spec:"105g / 袋",scene:"经销商、KA、电商",store:"常温 · 10个月",category:"虎皮凤爪",channel:"常温休食",price:"11.90",factoryPrice:"8.60",retailPrice:"11.90",flavor:"鲍汁味",image:"https://img.zhuoxi.group/10094cfe12b5e138597a2d83ea6ed86a70f932eb0cb410b5c4874a4a5a564b83757.png",tags:["脱骨侠","虎皮凤爪","便携装"],highlights:["单袋便携适合卖场上架","鲍汁口味适合电商详情页转化","适合经销商铺货铺市"],detail:"标准名称：虎皮凤爪-脱骨侠-105克-鲍汁味-10个月。",barcode69:"6977656954459"}
+];
+
+const state = {
+  payload: null,
+  products: [],
+  selected: new Set(),
+  filters: { channel: "all", category: "all" }
+};
+
+const $ = (id) => document.getElementById(id);
+const safeArray = (v) => Array.isArray(v) ? v : [];
+const unique = (arr) => [...new Set(arr.filter(Boolean))];
+
+function formatPrice(v){ return v && v !== "0.00" ? `建议零售价 ${v} 元` : "价格面议"; }
+function formatFactory(v){ return v ? `出厂价 ${v} 元` : "出厂价待定"; }
+
+function fallbackPayload(){
+  return {
+    brand: "脱骨侠",
+    activeScene: "manual",
+    scenes: {
+      manual: {
+        title: "脱骨侠商品选品",
+        summary: "像点菜单一样快速选商品。",
+        products: fallbackProducts
+      }
+    },
+    lastSyncAt: "未同步"
+  };
+}
+
+function readPayload(){
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return fallbackPayload();
+    return JSON.parse(raw);
+  } catch {
+    return fallbackPayload();
+  }
+}
+
+function currentScene(payload){
+  const p = payload || {};
+  const scenes = p.scenes || {};
+  return scenes[p.activeScene] || scenes.manual || fallbackPayload().scenes.manual;
+}
+
+function normalizeProducts(payload){
+  const scene = currentScene(payload);
+  const incoming = safeArray(scene.products);
+  if (!incoming.length) return fallbackProducts;
+  return incoming.map(item => {
+    const base = fallbackProducts.find(p => p.id === item.id) || {};
+    return {
+      ...base,
+      ...item,
+      tags: unique([...(base.tags || []), ...(safeArray(item.tags))]),
+      highlights: safeArray(item.highlights && item.highlights.length ? item.highlights : base.highlights)
+    };
+  });
+}
+
+function applyPayload(payload){
+  state.payload = payload || fallbackPayload();
+  state.products = normalizeProducts(state.payload);
+  const scene = currentScene(state.payload);
+  $("pageTitle").textContent = scene.title || "脱骨侠商品选品";
+  $("syncHint").textContent = `最近同步：${state.payload.lastSyncAt || "刚刚"}`;
+  $("syncHint").classList.add("ok");
+  ensureSelectionStillValid();
+  renderFilters();
+  renderGrid();
+  renderSelected();
+}
+
+function ensureSelectionStillValid(){
+  const ids = new Set(state.products.map(p => p.id));
+  state.selected.forEach(id => { if (!ids.has(id)) state.selected.delete(id); });
+}
+
+function availableChannels(){ return ["all", ...unique(state.products.map(p => p.channel))]; }
+function availableCategories(){ return ["all", ...unique(state.products.map(p => p.category))]; }
+
+function renderFilterChips(containerId, list, active, key){
+  const root = $(containerId);
+  root.innerHTML = list.map(item => {
+    const label = item === "all" ? "全部" : item;
+    return `<button class="chip${active === item ? " active" : ""}" data-key="${key}" data-value="${item}" type="button">${label}</button>`;
+  }).join("");
+  Array.from(root.querySelectorAll("[data-key]")).forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.filters[key] = btn.dataset.value;
+      renderFilters();
+      renderGrid();
+    });
+  });
+}
+
+function renderFilters(){
+  renderFilterChips("channelFilters", availableChannels(), state.filters.channel, "channel");
+  renderFilterChips("categoryFilters", availableCategories(), state.filters.category, "category");
+}
+
+function visibleProducts(){
+  return state.products.filter(p => {
+    if (state.filters.channel !== "all" && p.channel !== state.filters.channel) return false;
+    if (state.filters.category !== "all" && p.category !== state.filters.category) return false;
+    return true;
+  });
+}
+
+function toggleSelect(id){
+  if (state.selected.has(id)) state.selected.delete(id);
+  else state.selected.add(id);
+  renderGrid();
+  renderSelected();
+}
+
+function renderGrid(){
+  const list = visibleProducts();
+  $("gridMeta").textContent = `${list.length} 个商品`;
+  const root = $("productGrid");
+  if (!list.length){
+    root.innerHTML = '<div class="empty">当前筛选条件下没有商品，试试切换筛选项。</div>';
+    return;
+  }
+  root.innerHTML = list.map(p => {
+    const selected = state.selected.has(p.id);
+    return `
+      <article class="product-card">
+        <div class="card-media">
+          <img src="${p.image || ""}" alt="${p.name}" loading="lazy" />
+          <span class="price-badge">${formatPrice(p.retailPrice || p.price)}</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${p.name}</h3>
+          <p class="card-sub">${p.desc || p.detail || ""}</p>
+          <div class="tag-row">${safeArray(p.tags).slice(0,3).map(t => `<span class="tag">${t}</span>`).join("")}</div>
+          <div class="card-foot">
+            <span class="spec">${p.spec || "-"}</span>
+            <div>
+              <button class="btn ghost" data-open="${p.id}" type="button">详情</button>
+              <button class="btn ${selected ? "danger" : "primary"}" data-toggle="${p.id}" type="button">${selected ? "取消" : "选择"}</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  Array.from(root.querySelectorAll("[data-toggle]")).forEach(btn => btn.addEventListener("click", () => toggleSelect(btn.dataset.toggle)));
+  Array.from(root.querySelectorAll("[data-open]")).forEach(btn => btn.addEventListener("click", () => openDrawer(btn.dataset.open)));
+}
+
+function selectedProducts(){
+  const ids = state.selected;
+  return state.products.filter(p => ids.has(p.id));
+}
+
+function renderSelected(){
+  const list = selectedProducts();
+  $("selectedCount").textContent = String(list.length);
+  const root = $("selectedList");
+  if (!list.length){
+    root.innerHTML = '<div class="empty">还没有选择商品。<br>在左侧卡片点击“选择”即可加入。</div>';
+    return;
+  }
+  root.innerHTML = list.map(p => `
+    <article class="selected-item">
+      <strong>${p.name}</strong>
+      <div class="line">${p.spec || "-"} · ${p.channel || "-"}</div>
+      <div class="selected-actions">
+        <button class="btn ghost" data-open-selected="${p.id}" type="button">详情</button>
+        <button class="btn danger" data-remove="${p.id}" type="button">移除</button>
+      </div>
+    </article>
+  `).join("");
+  Array.from(root.querySelectorAll("[data-open-selected]")).forEach(btn => btn.addEventListener("click", () => openDrawer(btn.dataset.openSelected)));
+  Array.from(root.querySelectorAll("[data-remove]")).forEach(btn => btn.addEventListener("click", () => {
+    state.selected.delete(btn.dataset.remove);
+    renderGrid();
+    renderSelected();
+  }));
+}
+
+function getProductById(id){ return state.products.find(p => p.id === id); }
+
+function openDrawer(id){
+  const p = getProductById(id);
+  if (!p) return;
+  $("drawerTitle").textContent = p.name;
+  $("drawerMeta").textContent = `${p.spec || "-"} · ${p.store || "-"} · ${p.channel || "-"}`;
+  $("drawerCover").innerHTML = `<img src="${p.image || ""}" alt="${p.name}">`;
+  $("drawerKV").innerHTML = [
+    ["建议零售价", formatPrice(p.retailPrice || p.price)],
+    ["出厂价", formatFactory(p.factoryPrice)],
+    ["分类", p.category || "-"],
+    ["口味", p.flavor || "-"],
+    ["69码", p.barcode69 || "-"],
+    ["场景", p.scene || "-"]
+  ].map(item => `<div class="kv-item"><span>${item[0]}</span><strong>${item[1]}</strong></div>`).join("");
+  $("drawerBullets").innerHTML = safeArray(p.highlights).map(t => `<li>${t}</li>`).join("");
+  $("drawer").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDrawer(){
+  $("drawer").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function clearSelected(){
+  state.selected.clear();
+  renderGrid();
+  renderSelected();
+}
+
+function selectAllVisible(){
+  visibleProducts().forEach(p => state.selected.add(p.id));
+  renderGrid();
+  renderSelected();
+}
+
+function deselectAllVisible(){
+  visibleProducts().forEach(p => state.selected.delete(p.id));
+  renderGrid();
+  renderSelected();
+}
+
+async function copySelected(){
+  const list = selectedProducts();
+  if (!list.length) return;
+  const text = list.map((p, idx) => `${idx + 1}. ${p.name}｜${p.spec || "-"}｜${p.channel || "-"}`).join("\n");
+  try {
+    await navigator.clipboard.writeText(text);
+    const btn = $("copySelected");
+    const old = btn.textContent;
+    btn.textContent = "已复制";
+    setTimeout(() => btn.textContent = old, 1200);
+  } catch {}
+}
+
+$("closeDrawer").addEventListener("click", closeDrawer);
+$("drawer").addEventListener("click", (e) => { if (e.target === $("drawer")) closeDrawer(); });
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && $("drawer").classList.contains("open")) closeDrawer();
+});
+
+$("clearSelected").addEventListener("click", clearSelected);
+$("copySelected").addEventListener("click", copySelected);
+$("selectAllVisible").addEventListener("click", selectAllVisible);
+$("deselectAllVisible").addEventListener("click", deselectAllVisible);
+$("openDrawerFromSelected").addEventListener("click", () => {
+  const first = selectedProducts()[0];
+  if (first) openDrawer(first.id);
+});
+
+window.addEventListener("message", (event) => {
+  const data = event.data || {};
+  if (data.type !== MOBILE_SYNC_EVENT || !data.payload) return;
+  try { localStorage.setItem(KEY, JSON.stringify(data.payload)); } catch {}
+  applyPayload(data.payload);
+});
+
+window.addEventListener("storage", (event) => {
+  if (event.key !== KEY || !event.newValue) return;
+  try { applyPayload(JSON.parse(event.newValue)); } catch {}
+});
+
+applyPayload(readPayload());
+</script>
+</body>
+</html>
