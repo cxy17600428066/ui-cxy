@@ -20,6 +20,31 @@ Write-Log "Auto sync watcher started."
 $script:pending = $false
 $script:lastEvent = Get-Date
 
+function Invoke-SyncIfNeeded {
+  param(
+    [string]$Reason
+  )
+
+  Push-Location $repoRoot
+  try {
+    $status = git status --porcelain
+    if ([string]::IsNullOrWhiteSpace(($status | Out-String))) {
+      return $false
+    }
+
+    Write-Log ("Detected changes ({0}). Running git quick." -f $Reason)
+    git quick ("Auto sync " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss"))
+    if ($LASTEXITCODE -ne 0) {
+      throw "git quick failed with exit code $LASTEXITCODE"
+    }
+    Write-Log "Auto sync completed."
+    return $true
+  }
+  finally {
+    Pop-Location
+  }
+}
+
 function Mark-Pending {
   param($Sender, $EventArgs)
   $fullPath = ""
@@ -54,6 +79,13 @@ $deleted = Register-ObjectEvent -InputObject $watcher -EventName Deleted -Action
 $renamed = Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action { Mark-Pending $Sender $EventArgs }
 
 try {
+  try {
+    Invoke-SyncIfNeeded -Reason "startup scan" | Out-Null
+  }
+  catch {
+    Write-Log ("Auto sync failed: " + $_.Exception.Message)
+  }
+
   while ($true) {
     Start-Sleep -Seconds 2
     if (-not $script:pending) {
@@ -65,24 +97,14 @@ try {
       continue
     }
 
-    Push-Location $repoRoot
     try {
       $script:pending = $false
-      $status = git status --porcelain
-      if ([string]::IsNullOrWhiteSpace(($status | Out-String))) {
-        continue
-      }
-      Write-Log "Detected changes. Running git quick."
-      git quick ("Auto sync " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss"))
-      Write-Log "Auto sync completed."
+      Invoke-SyncIfNeeded -Reason "file watcher" | Out-Null
     }
     catch {
       Write-Log ("Auto sync failed: " + $_.Exception.Message)
       $script:pending = $true
       $script:lastEvent = Get-Date
-    }
-    finally {
-      Pop-Location
     }
   }
 }
