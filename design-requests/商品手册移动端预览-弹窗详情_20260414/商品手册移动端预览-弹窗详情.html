@@ -45,6 +45,7 @@ const unique = (list) => [...new Set(list.filter(Boolean))];
 function escapeHtml(value){return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
 function escapeAttr(value){return escapeHtml(value)}
 function splitText(value){if(Array.isArray(value))return value.map(item=>String(item||"").trim()).filter(Boolean);return String(value||"").split(/[\n,，、|]/).map(item=>item.trim()).filter(Boolean)}
+function pickFirst(){for(const value of arguments){if(value===0)return"0";if(value!==undefined&&value!==null&&String(value).trim())return String(value).trim()}return""}
 function formatPrice(value){return value && value!=="0.00" ? `￥${value}` : "价格面议"}
 function formatPriceDetail(value){return value && value!=="0.00" ? `建议零售价 ${value} 元` : "建议零售价 面议"}
 function formatFactory(value){return value ? `出厂价 ${value} 元` : "出厂价待定"}
