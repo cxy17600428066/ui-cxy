@@ -653,12 +653,12 @@ h3 {
   }
 
   h1 {
-    font-size: clamp(31px, 9.8vw, 38px);
+    font-size: clamp(30px, 9vw, 35px);
     line-height: 1.12;
   }
 
   h1 span {
-    display: inline;
+    display: block;
   }
 
   .hero-lead {
