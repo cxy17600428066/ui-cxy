@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>唠唠 AI 虚拟陪伴 App 作品集</title>
+  <style>
+    :root {
+      --bg: #11131d;
+      --panel: #191b29;
+      --panel-2: #222436;
+      --ink: #f5f1e8;
+      --muted: #b9b4c6;
+      --soft: #7f7a98;
+      --line: rgba(255, 255, 255, .12);
+      --gold: #efbd71;
+      --violet: #8c5cff;
+      --cyan: #74d8ff;
+      --rose: #ff8db4;
+      --green: #7be0b0;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .34);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(239, 189, 113, .16), transparent 28rem),
+        radial-gradient(circle at 88% 8%, rgba(116, 216, 255, .13), transparent 30rem),
+        linear-gradient(180deg, #141521 0%, #11131d 42%, #15111c 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      letter-spacing: 0;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      overflow: hidden;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid var(--line);
+      background: rgba(17, 19, 29, .82);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, var(--gold), var(--violet));
+      box-shadow: 0 0 28px rgba(239, 189, 113, .28);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .nav-links a {
+      opacity: .86;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+      opacity: 1;
+    }
+
+    section {
+      position: relative;
+      padding: 86px 0;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 860px;
+      padding: 78px 0 70px;
+      display: grid;
+      align-items: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 520px;
+      align-items: center;
+      gap: 56px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--gold);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 20px;
+      font-size: 72px;
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 710px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 34px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #e8e1f5;
+      background: rgba(255, 255, 255, .06);
+      font-size: 13px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 650px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #fff;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .phone-stage {
+      position: relative;
+      min-height: 660px;
+    }
+
+    .phone {
+      position: absolute;
+      width: 250px;
+      border: 10px solid #0c0e16;
+      border-radius: 34px;
+      background: #0c0e16;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .phone img {
+      width: 100%;
+      aspect-ratio: 750 / 1624;
+      object-fit: cover;
+    }
+
+    .phone.main {
+      right: 86px;
+      top: 10px;
+      width: 294px;
+      z-index: 5;
+    }
+
+    .phone.left {
+      left: 18px;
+      top: 126px;
+      width: 230px;
+      transform: rotate(-5deg);
+      opacity: .94;
+    }
+
+    .phone.bottom {
+      right: 0;
+      bottom: 0;
+      width: 224px;
+      transform: rotate(5deg);
+      opacity: .9;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+      gap: 56px;
+      align-items: start;
+      margin-bottom: 38px;
+    }
+
+    .section-kicker {
+      margin-bottom: 12px;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-size: 38px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.85;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .info-card {
+      min-height: 210px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .035));
+    }
+
+    .info-card h3 {
+      margin-bottom: 12px;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .info-card p,
+    .info-card li {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .info-card ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .accent-gold {
+      border-top: 3px solid var(--gold);
+    }
+
+    .accent-violet {
+      border-top: 3px solid var(--violet);
+    }
+
+    .accent-cyan {
+      border-top: 3px solid var(--cyan);
+    }
+
+    .research {
+      background: rgba(255, 255, 255, .03);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .persona-row {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .quote-card {
+      min-height: 100%;
+      padding: 32px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(239, 189, 113, .18), rgba(140, 92, 255, .13)),
+        rgba(255, 255, 255, .05);
+      border: 1px solid rgba(239, 189, 113, .24);
+    }
+
+    .quote-card blockquote {
+      margin: 0 0 24px;
+      color: #fff;
+      font-size: 25px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .quote-card p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .goal-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .goal-item {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .05);
+    }
+
+    .number {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #17131a;
+      background: var(--gold);
+      font-weight: 800;
+    }
+
+    .goal-item h3 {
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .goal-item p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .showcase-band {
+      padding-top: 96px;
+      background:
+        linear-gradient(180deg, rgba(140, 92, 255, .09), rgba(255, 255, 255, 0)),
+        #121420;
+    }
+
+    .screen-group {
+      margin-top: 34px;
+      padding: 28px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .045);
+    }
+
+    .screen-group-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .screen-group h3 {
+      margin-bottom: 8px;
+      font-size: 26px;
+    }
+
+    .screen-group p {
+      max-width: 680px;
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .screen-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .screen {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 8px solid #0b0d15;
+      background: #0b0d15;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, .25);
+    }
+
+    .screen img {
+      width: 100%;
+      aspect-ratio: 750 / 1624;
+      object-fit: cover;
+    }
+
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .strategy-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .strategy-item {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .05);
+    }
+
+    .strategy-item h3 {
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .strategy-item p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .flow-board {
+      padding: 26px;
+      border: 1px solid rgba(116, 216, 255, .2);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(116, 216, 255, .08), rgba(255, 255, 255, .04));
+    }
+
+    .flow {
+      display: grid;
+      gap: 12px;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 18px 18px 18px 54px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .07);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .flow-step span {
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #11131d;
+      background: var(--cyan);
+      font-size: 13px;
+    }
+
+    .metrics {
+      background: #f5f1e8;
+      color: #17131a;
+    }
+
+    .metrics .section-kicker {
+      color: #8b5a1f;
+    }
+
+    .metrics .section-desc,
+    .metrics .info-card p,
+    .metrics .info-card li {
+      color: #5c5864;
+    }
+
+    .metrics .info-card {
+      background: #fff;
+      border-color: rgba(23, 19, 26, .12);
+      box-shadow: 0 16px 44px rgba(23, 19, 26, .08);
+    }
+
+    .metric-table {
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid rgba(23, 19, 26, .12);
+      box-shadow: 0 16px 44px rgba(23, 19, 26, .08);
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: 1.2fr .9fr 1fr;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(23, 19, 26, .1);
+      align-items: center;
+    }
+
+    .metric-row:last-child {
+      border-bottom: 0;
+    }
+
+    .metric-head {
+      background: #17131a;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .metric-row strong {
+      font-size: 20px;
+    }
+
+    .metric-row span {
+      color: #5c5864;
+      line-height: 1.6;
+    }
+
+    .metric-head span {
+      color: #fff;
+    }
+
+    .summary {
+      padding: 90px 0 110px;
+      background: #11131d;
+    }
+
+    .summary-box {
+      padding: 36px;
+      border-radius: 8px;
+      border: 1px solid rgba(239, 189, 113, .26);
+      background:
+        linear-gradient(135deg, rgba(239, 189, 113, .13), rgba(140, 92, 255, .1)),
+        rgba(255, 255, 255, .04);
+    }
+
+    .summary-box h2 {
+      margin-bottom: 18px;
+    }
+
+    .summary-box p {
+      max-width: 940px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.85;
+    }
+
+    .note {
+      margin-top: 20px;
+      color: var(--soft);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 64px 0;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-grid,
+      .section-head,
+      .persona-row,
+      .strategy-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 48px;
+      }
+
+      .phone-stage {
+        min-height: 620px;
+      }
+
+      .phone.main {
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      .phone.left {
+        left: 4%;
+      }
+
+      .phone.bottom {
+        right: 4%;
+      }
+
+      .grid-3,
+      .grid-2,
+      .screen-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container,
+      .nav-inner {
+        width: min(100% - 24px, 1180px);
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      h2 {
+        font-size: 30px;
+      }
+
+      .lead {
+        font-size: 17px;
+      }
+
+      .hero-stats,
+      .grid-3,
+      .grid-2,
+      .screen-row {
+        grid-template-columns: 1fr;
+      }
+
+      .phone-stage {
+        min-height: 520px;
+      }
+
+      .phone.main {
+        width: 244px;
+      }
+
+      .phone.left,
+      .phone.bottom {
+        display: none;
+      }
+
+      .screen-group {
+        padding: 18px;
+      }
+
+      .screen-group-head {
+        display: block;
+      }
+
+      .metric-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#home">
+          <span class="brand-mark"></span>
+          <span>唠唠 App Design Case</span>
+        </a>
+        <div class="nav-links">
+          <a href="#background">业务背景</a>
+          <a href="#goal">业务目标</a>
+          <a href="#research">用户调研</a>
+          <a href="#design-goal">设计目标</a>
+          <a href="#screens">页面展示</a>
+          <a href="#strategy">设计策略</a>
+          <a href="#metrics">数据指标</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">AI COMPANION · VIRTUAL CHARACTER · STORY INTERACTION</p>
+          <h1>唠唠：AI 虚拟陪伴与剧情互动 App 设计</h1>
+          <p class="lead">围绕年轻用户的情绪陪伴、角色共创和剧情互动需求，构建从虚拟人创建、AI 聊天陪伴到剧情任务成长的完整移动端体验。</p>
+          <div class="meta">
+            <span class="tag">项目类型：移动端 App</span>
+            <span class="tag">角色：UI / UX 设计</span>
+            <span class="tag">关键词：AI 陪伴</span>
+            <span class="tag">关键词：虚拟人</span>
+            <span class="tag">关键词：游戏化成长</span>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>98</strong>
+              <span>张核心界面沉淀，覆盖主要体验链路</span>
+            </div>
+            <div class="stat">
+              <strong>6</strong>
+              <span>个关键模块：创建、聊天、详情、等级、剧情、引导</span>
+            </div>
+            <div class="stat">
+              <strong>3</strong>
+              <span>条作品集主线：陪伴、共创、成长</span>
+            </div>
+          </div>
+        </div>
+        <div class="phone-stage" aria-label="核心页面预览">
+          <div class="phone left"><img src="images/069.png" alt="创建人物流程"></div>
+          <div class="phone main"><img src="images/068.png" alt="AI 陪伴聊天页"></div>
+          <div class="phone bottom"><img src="images/052.png" alt="创作者等级页"></div>
+        </div>
+      </div>
+    </header>
+
+    <section id="background">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">01 业务背景</p>
+            <h2>AI 陪伴产品从工具对话，转向可持续关系体验</h2>
+          </div>
+          <p class="section-desc">生成式 AI 降低了虚拟角色的内容生产门槛，但单纯聊天容易出现新鲜感衰减、角色记忆弱、互动目标不清晰等问题。项目希望将“AI 对话”包装成更具情绪价值的陪伴产品，让用户能创建角色、理解角色、持续互动，并通过剧情和成长体系形成长期留存。</p>
+        </div>
+        <div class="grid-3">
+          <article class="info-card accent-gold">
+            <h3>市场机会</h3>
+            <p>年轻用户愿意与 AI 角色进行低压力表达，尤其在情绪倾诉、陪伴幻想、剧情代入和角色养成场景中，具备更强的停留与复访动机。</p>
+          </article>
+          <article class="info-card accent-violet">
+            <h3>产品挑战</h3>
+            <p>如果只提供聊天输入框，用户很难理解角色差异和玩法目标。设计需要把“角色设定、关系进展、剧情任务”显性化。</p>
+          </article>
+          <article class="info-card accent-cyan">
+            <h3>体验方向</h3>
+            <p>以沉浸式视觉建立幻想感，以任务和等级建立进度感，以角色详情和知识库建立可信的人设感。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="goal">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">02 业务目标</p>
+            <h2>把首次体验转化为持续互动关系</h2>
+          </div>
+          <p class="section-desc">业务目标不是让用户完成一次聊天，而是让用户理解产品能带来的陪伴价值，并在角色创建、剧情体验、亲密度成长中找到继续投入的理由。</p>
+        </div>
+        <div class="grid-3">
+          <article class="info-card">
+            <h3>提升首次完成率</h3>
+            <p>降低虚拟人创建的理解成本，用分阶段任务替代一次性长表单，帮助用户顺利完成基础档案、羁绊、形象、声音等设定。</p>
+          </article>
+          <article class="info-card">
+            <h3>提升聊天启动率</h3>
+            <p>通过会话引导、主动推新、角色信息和快捷入口，减少“用户不知道聊什么”的冷启动问题。</p>
+          </article>
+          <article class="info-card">
+            <h3>提升长期留存</h3>
+            <p>用亲密度、陪伴等级、创作者等级、剧情任务和奖励反馈，构建可持续追求的成长闭环。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="research" id="research">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">03 用户调研</p>
+            <h2>用户需要的不是“机器人”，而是有边界的情绪对象</h2>
+          </div>
+          <p class="section-desc">基于目标用户场景做体验假设：用户在尝试 AI 陪伴时，一方面期待角色足够鲜活，另一方面也需要明确的安全感、可控感和互动目标。</p>
+        </div>
+        <div class="persona-row">
+          <div class="quote-card">
+            <blockquote>“我想要一个能回应我情绪的人设，但也希望它有自己的故事、关系进度和互动目标。”</blockquote>
+            <p>核心人群可概括为：喜欢角色扮演、乙女/剧情互动、AI 聊天、虚拟陪伴的年轻用户。她们愿意花时间塑造角色，但前提是过程足够沉浸、反馈足够及时、关系成长能被看见。</p>
+          </div>
+          <div class="goal-list">
+            <div class="goal-item">
+              <div class="number">1</div>
+              <div>
+                <h3>创建焦虑</h3>
+                <p>用户想定制角色，但长表单会降低耐心，需要明确进度和阶段反馈。</p>
+              </div>
+            </div>
+            <div class="goal-item">
+              <div class="number">2</div>
+              <div>
+                <h3>聊天冷启动</h3>
+                <p>用户进入对话后常不知道从哪里开始，需要话题提示和角色引导。</p>
+              </div>
+            </div>
+            <div class="goal-item">
+              <div class="number">3</div>
+              <div>
+                <h3>持续动力不足</h3>
+                <p>如果缺少任务、奖励和关系进度，聊天会变成一次性尝鲜。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="design-goal">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">04 设计目标</p>
+            <h2>用“沉浸感、可控感、成长感”支撑 AI 陪伴体验</h2>
+          </div>
+          <p class="section-desc">设计目标围绕用户从首次进入到长期使用的关键阻力展开：先让用户愿意进入世界，再让用户能顺畅创建角色，最后让用户持续回到关系与剧情中。</p>
+        </div>
+        <div class="grid-3">
+          <article class="info-card accent-gold">
+            <h3>沉浸感</h3>
+            <p>通过暗色背景、光效、卡牌、幻想场景和高对比人物图，建立“进入另一个关系世界”的视觉心智。</p>
+          </article>
+          <article class="info-card accent-cyan">
+            <h3>可控感</h3>
+            <p>把角色创建拆为基础档案、羁绊线索、人物塑造、声音设定、形象设定，让用户知道当前做什么、下一步去哪。</p>
+          </article>
+          <article class="info-card accent-violet">
+            <h3>成长感</h3>
+            <p>用等级、勋章、亲密度、任务完成、奖励弹窗、排行榜等机制，让互动投入具备可视化反馈。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-band" id="screens">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">05 页面展示</p>
+            <h2>围绕三条核心链路展示完整产品能力</h2>
+          </div>
+          <p class="section-desc">页面展示不按截图数量堆叠，而按用户任务分组：创建虚拟人、AI 陪伴聊天、剧情互动与成长体系。这样能让招聘方快速理解你的系统设计能力。</p>
+        </div>
+
+        <div class="screen-group">
+          <div class="screen-group-head">
+            <div>
+              <h3>虚拟人创建流程</h3>
+              <p>用仪式感节点承接角色生成过程，降低表单感，让用户在“解锁档案”的过程中完成角色设定。</p>
+            </div>
+          </div>
+          <div class="screen-row">
+            <div class="screen"><img src="images/069.png" alt="创建人物"></div>
+            <div class="screen"><img src="images/083.png" alt="基本信息"></div>
+            <div class="screen"><img src="images/074.png" alt="对话标签选择"></div>
+            <div class="screen"><img src="images/077.png" alt="形象设定"></div>
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <div class="screen-group-head">
+            <div>
+              <h3>AI 陪伴聊天体验</h3>
+              <p>通过角色大图、人格标签、关系等级、会话引导和底部输入区，强化“正在与具体角色交流”的感受。</p>
+            </div>
+          </div>
+          <div class="screen-row">
+            <div class="screen"><img src="images/068.png" alt="聊天常规"></div>
+            <div class="screen"><img src="images/065.png" alt="会话引导"></div>
+            <div class="screen"><img src="images/063.png" alt="主动推新弹窗"></div>
+            <div class="screen"><img src="images/067.png" alt="聊天全屏"></div>
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <div class="screen-group-head">
+            <div>
+              <h3>剧情互动与成长体系</h3>
+              <p>用剧情任务、线索解锁、通关反馈、亲密度与创作者等级，将聊天产品扩展成可持续运营的互动内容生态。</p>
+            </div>
+          </div>
+          <div class="screen-row">
+            <div class="screen"><img src="images/089.png" alt="剧情广场"></div>
+            <div class="screen"><img src="images/091.png" alt="剧情聊天"></div>
+            <div class="screen"><img src="images/092.png" alt="通关成功"></div>
+            <div class="screen"><img src="images/052.png" alt="创作者等级"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategy">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">06 设计策略</p>
+            <h2>从视觉包装到行为闭环，建立可运营的陪伴系统</h2>
+          </div>
+          <p class="section-desc">设计策略分为两层：一层解决用户能不能快速理解和上手，另一层解决用户为什么愿意持续回来。</p>
+        </div>
+        <div class="strategy-grid">
+          <div class="strategy-list">
+            <article class="strategy-item">
+              <h3>策略一：用世界观包装功能入口</h3>
+              <p>将创建表单转化为“基础档案、羁绊线索、人物塑造、人物心智”等阶段，使功能流程具备故事感和仪式感。</p>
+            </article>
+            <article class="strategy-item">
+              <h3>策略二：用角色信息降低聊天门槛</h3>
+              <p>在聊天页前置人物背景、人设标签、关系等级与快捷操作，帮助用户理解角色边界并快速开启对话。</p>
+            </article>
+            <article class="strategy-item">
+              <h3>策略三：用游戏化反馈强化回访</h3>
+              <p>通过亲密等级、创作者等级、勋章、道具、任务完成和排行榜，让情绪陪伴具备明确进度和奖励预期。</p>
+            </article>
+          </div>
+          <div class="flow-board">
+            <h3>核心体验闭环</h3>
+            <div class="flow">
+              <div class="flow-step"><span>1</span>进入幻想世界，理解产品调性</div>
+              <div class="flow-step"><span>2</span>分阶段创建虚拟人，完成角色设定</div>
+              <div class="flow-step"><span>3</span>通过话题引导开启 AI 对话</div>
+              <div class="flow-step"><span>4</span>在剧情任务中获得目标和反馈</div>
+              <div class="flow-step"><span>5</span>亲密度与等级成长推动复访</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="metrics" id="metrics">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">07 数据指标提升</p>
+            <h2>以可衡量指标验证设计价值</h2>
+          </div>
+          <p class="section-desc">当前作品未提供真实上线数据，因此这里采用作品集常用的“目标指标与验证方式”表达。若后续有真实数据，可以直接替换右侧目标值。</p>
+        </div>
+        <div class="metric-table">
+          <div class="metric-row metric-head">
+            <span>指标方向</span>
+            <span>目标提升</span>
+            <span>设计关联</span>
+          </div>
+          <div class="metric-row">
+            <strong>虚拟人创建完成率</strong>
+            <span>目标提升 15% - 25%</span>
+            <span>分阶段创建、节点反馈、输入项降噪、完成态仪式感。</span>
+          </div>
+          <div class="metric-row">
+            <strong>首次聊天启动率</strong>
+            <span>目标提升 10% - 20%</span>
+            <span>会话引导、角色背景、快捷话题、主动推新弹窗。</span>
+          </div>
+          <div class="metric-row">
+            <strong>次日留存率</strong>
+            <span>目标提升 8% - 15%</span>
+            <span>亲密等级、打卡反馈、剧情任务、可见成长进度。</span>
+          </div>
+          <div class="metric-row">
+            <strong>剧情任务完成率</strong>
+            <span>目标提升 12% - 18%</span>
+            <span>任务列表、线索解锁、通关反馈、奖励弹窗与分享入口。</span>
+          </div>
+        </div>
+        <p class="note">说明：以上为设计验证指标模板，不作为真实上线数据陈述。面试前建议替换为真实项目数据、可用性测试结果或 A/B 测试记录。</p>
+      </div>
+    </section>
+
+    <section class="summary">
+      <div class="container">
+        <div class="summary-box">
+          <p class="section-kicker">08 总结</p>
+          <h2>项目总结</h2>
+          <p>本项目将 AI 对话能力转译为更适合年轻用户的陪伴产品体验：通过幻想感视觉建立进入感，通过分阶段创建提升角色共创效率，通过聊天引导降低互动门槛，通过剧情任务和等级体系增强长期使用动机。作品集呈现重点不只是最终页面，而是展示我如何围绕业务目标、用户需求和可运营机制，搭建一套完整的移动端 UI 体验。</p>
+          <div class="grid-3">
+            <article class="info-card">
+              <h3>设计能力</h3>
+              <p>完成多模块移动端界面、复杂状态、弹窗、任务、等级、列表和聊天场景设计。</p>
+            </article>
+            <article class="info-card">
+              <h3>产品能力</h3>
+              <p>围绕用户冷启动、创建转化和留存问题，构建设计目标和体验闭环。</p>
+            </article>
+            <article class="info-card">
+              <h3>表达能力</h3>
+              <p>将大量页面整理为业务背景、目标、调研、策略、结果指标的完整案例。</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
